@@ -38,7 +38,12 @@ dependencies {
     androidTestApi(platform(project(":depconstraints")))
 
     implementation(Libs.CORE_KTX)
+    implementation(Libs.COROUTINES)
+    implementation(Libs.TIMBER)
+
     testImplementation(Libs.JUNIT)
+    testImplementation(Libs.TRUTH)
+    
     androidTestImplementation(Libs.ESPRESSO_CORE)
     androidTestImplementation(Libs.EXT_JUNIT)
 }
