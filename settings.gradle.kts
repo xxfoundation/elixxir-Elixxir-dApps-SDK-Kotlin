@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "Elixxir dApps SDK Kotlin"
 include(":app")
 include(":depconstraints")
+include(":cmix")
