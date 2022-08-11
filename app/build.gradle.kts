@@ -33,6 +33,9 @@ android {
 }
 
 dependencies {
+    implementation(fileTree(mapOf("include" to listOf("*.jar"), "dir" to "libs")))
+    implementation((project(":cmix")))
+    
     api(platform(project(":depconstraints")))
     kapt(platform(project(":depconstraints")))
     androidTestApi(platform(project(":depconstraints")))
@@ -43,7 +46,7 @@ dependencies {
 
     testImplementation(Libs.JUNIT)
     testImplementation(Libs.TRUTH)
-    
+
     androidTestImplementation(Libs.ESPRESSO_CORE)
     androidTestImplementation(Libs.EXT_JUNIT)
 }
