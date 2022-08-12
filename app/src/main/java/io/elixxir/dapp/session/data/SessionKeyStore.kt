@@ -7,6 +7,7 @@ import android.security.keystore.KeyProperties
 import bindings.Bindings
 import io.elixxir.dapp.DappSdk.Companion.defaultDispatcher
 import io.elixxir.dapp.preferences.KeyStorePreferences
+import io.elixxir.dapp.session.model.SecureHardwareException
 import io.elixxir.dapp.session.model.SessionPassword
 import io.elixxir.dapp.util.fromBase64toByteArray
 import io.elixxir.dapp.util.toBase64String
@@ -23,13 +24,12 @@ import javax.crypto.NoSuchPaddingException
 import javax.crypto.spec.OAEPParameterSpec
 import javax.crypto.spec.PSource
 
-interface SessionKeyStore {
+internal interface SessionKeyStore {
     suspend fun createSessionPassword(requireSecureHardware: Boolean): Result<Unit>
     suspend fun rsaDecryptPassword(): SessionPassword
 }
 
 internal class DappSessionKeystore private constructor(
-class DappSessionKeystore private constructor(
     private val preferences: KeyStorePreferences,
     private val dispatcher: CoroutineDispatcher
 ) : SessionKeyStore {

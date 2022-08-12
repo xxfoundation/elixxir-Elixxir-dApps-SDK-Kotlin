@@ -16,7 +16,7 @@ import kotlinx.coroutines.*
  * Establishes & persists an identity to perform Cmix operations.
  * Only needs to be created once per app installation.
  */
-interface SessionManager {
+internal interface SessionManager {
     val sessionFolder: File
 }
 

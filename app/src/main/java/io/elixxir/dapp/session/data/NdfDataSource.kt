@@ -12,7 +12,7 @@ import io.elixxir.dapp.session.model.NdfSettings
 import kotlinx.coroutines.*
 typealias Ndf = String
 
-interface NdfDataSource {
+internal interface NdfDataSource {
     suspend fun fetchNdf(): Ndf
 }
 
