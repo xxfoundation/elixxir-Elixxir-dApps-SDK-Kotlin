@@ -6,6 +6,8 @@ import android.security.keystore.KeyInfo
 import android.security.keystore.KeyProperties
 import bindings.Bindings
 import io.elixxir.dapp.DappSdk.Companion.defaultDispatcher
+import io.elixxir.dapp.DappSdk.Companion.logger
+import io.elixxir.dapp.logger.data.Logger
 import io.elixxir.dapp.preferences.KeyStorePreferences
 import io.elixxir.dapp.session.model.SecureHardwareException
 import io.elixxir.dapp.session.model.SessionPassword
@@ -13,7 +15,6 @@ import io.elixxir.dapp.util.fromBase64toByteArray
 import io.elixxir.dapp.util.toBase64String
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
-import timber.log.Timber
 import java.security.*
 import java.security.spec.MGF1ParameterSpec
 import java.security.spec.RSAKeyGenParameterSpec
@@ -23,6 +24,7 @@ import javax.crypto.IllegalBlockSizeException
 import javax.crypto.NoSuchPaddingException
 import javax.crypto.spec.OAEPParameterSpec
 import javax.crypto.spec.PSource
+import kotlin.system.measureTimeMillis
 
 internal interface SessionKeyStore {
     suspend fun createSessionPassword(requireSecureHardware: Boolean): Result<Unit>
@@ -30,9 +32,10 @@ internal interface SessionKeyStore {
 }
 
 internal class DappSessionKeystore private constructor(
+    logger: Logger,
     private val preferences: KeyStorePreferences,
     private val dispatcher: CoroutineDispatcher
-) : SessionKeyStore {
+) : SessionKeyStore, Logger by logger {
 
     override suspend fun createSessionPassword(requireSecureHardware: Boolean): Result<Unit> =
         withContext(dispatcher) {
@@ -40,40 +43,44 @@ internal class DappSessionKeystore private constructor(
                 return@withContext Result.failure(SecureHardwareException())
             }
 
-            deletePreviousKeys()
-            generateKeys()
-            generatePassword()
-
-            Result.success(Unit)
+            try {
+                deletePreviousKeys()
+                generateKeys()
+                generatePassword()
+                Result.success(Unit)
+            } catch (e: Exception) {
+                logError(e.message ?: "An error occured while creating session password.")
+                Result.failure(e)
+            }
     }
 
     private fun generatePassword() {
-        val bytesNumber: Long = PASSWORD_LENGTH
-        var initialT = System.currentTimeMillis()
-        Timber.v("[KEYSTORE] Generating a password...")
-        Timber.d("[KEYSTORE] Generating a password with $bytesNumber bytes")
+        val encryptionTime = measureTimeMillis {
+            val bytesNumber: Long = PASSWORD_LENGTH
+            log("Generating a password...")
+            log("Generating a password with $bytesNumber bytes")
 
-        var secret: ByteArray
-        do {
-            secret = Bindings.generateSecret(bytesNumber)
-            Timber.d("[KEYSTORE] Password (Bytearray): $secret")
-            Timber.d("[KEYSTORE] Password (String64): ${secret.toBase64String()}")
-            Timber.v("[KEYSTORE] total generation time: ${System.currentTimeMillis() - initialT}ms")
+            var secret: ByteArray
+            val generationTime = measureTimeMillis {
+                do {
+                    secret = Bindings.generateSecret(bytesNumber)
+                    log("Password (Bytearray): $secret")
+                    log("Password (String64): ${secret.toBase64String()}")
 
-            val isAllZeroes = byteArrayOf(bytesNumber.toByte()).contentEquals(secret)
-            Timber.d("[KEYSTORE] IsAllZeroes: $isAllZeroes")
-        } while (isAllZeroes)
-
-        initialT = System.currentTimeMillis()
-        rsaEncryptPwd(secret)
-        Timber.v("[KEYSTORE] total encryption time: ${System.currentTimeMillis() - initialT}ms")
-
+                    val isAllZeroes = byteArrayOf(bytesNumber.toByte()).contentEquals(secret)
+                    log("IsAllZeroes: $isAllZeroes")
+                } while (isAllZeroes)
+            }
+            log("Total generation time: $generationTime ms")
+            rsaEncryptPwd(secret)
+        }
+        log("Total encryption time: $encryptionTime ms")
     }
 
     private fun deletePreviousKeys() {
         val keystore = getKeystore()
         if (keystore.containsAlias(KEY_ALIAS)) {
-            Timber.v("[KEYSTORE] Deleting key alias")
+            log("Deleting key alias")
             keystore.deleteEntry(KEY_ALIAS)
         }
     }
@@ -82,34 +89,29 @@ internal class DappSessionKeystore private constructor(
         return try {
             val areKeysGenerated = generateKeys()
             if (areKeysGenerated) {
-                Timber.v("[KEYSTORE] Keystore keys successfully generated")
+                log("Keystore keys successfully generated")
                 true
             } else {
-                Timber.e("[KEYSTORE] Error generating keystore keys")
+                log("Error generating keystore keys")
                 false
             }
         } catch (err: Exception) {
-            Timber.e("[KEYSTORE] Error generating the keys...")
-            Timber.d(err.localizedMessage)
+            log("An error occured while generating keys.")
             false
         }
     }
 
     private fun generateKeys(): Boolean {
-        return try {
-            val keystore = getKeystore()
-            if (!keystore.containsAlias(KEY_ALIAS)) {
-                Timber.d("[KEYSTORE] Keystore alias does not exist, credentials")
-                val keyGenerator = getKeyPairGenerator()
-                keyGenerator.genKeyPair()
-            } else {
-                Timber.d("[KEYSTORE] Keystore alias already exist")
-            }
-            true
-        } catch (err: Exception) {
-            err.printStackTrace()
-            false
+        val keystore = getKeystore()
+        if (!keystore.containsAlias(KEY_ALIAS)) {
+            log("Keystore alias does not exist, credentials")
+            val keyGenerator = getKeyPairGenerator()
+            keyGenerator.genKeyPair()
+        } else {
+            log("Keystore alias already exist")
         }
+
+        return true
     }
 
     private fun getKeyPairGenerator(): KeyPairGenerator {
@@ -167,15 +169,16 @@ internal class DappSessionKeystore private constructor(
         BadPaddingException::class
     )
     private fun rsaEncryptPwd(pwd: ByteArray): ByteArray {
-        Timber.d("[KEYSTORE] Bytecount: ${pwd.size}")
-        Timber.d("[KEYSTORE] Before encryption: ${pwd.toBase64String()}")
+        log("Bytecount: ${pwd.size}")
+        log("Before encryption: ${pwd.toBase64String()}")
         val secretKey = getPublicKey()
 
         val cipher = Cipher.getInstance(KEYSTORE_ALGORITHM)
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, cipherMode)
         val encryptedBytes = cipher.doFinal(pwd)
-        Timber.v("[KEYSTORE] Encrypted: ${encryptedBytes.toBase64String()}")
+        log("Encrypted: ${encryptedBytes.toBase64String()}")
         preferences.userSecret = encryptedBytes.toBase64String()
+
         return encryptedBytes
     }
 
@@ -190,10 +193,10 @@ internal class DappSessionKeystore private constructor(
         val encryptedBytes = preferences.userSecret.fromBase64toByteArray()
         val key = getPrivateKey()
         val cipher1 = Cipher.getInstance(KEYSTORE_ALGORITHM)
-        println("[KEYSTORE] Initializing Decrypt")
+        println("Initializing Decrypt")
         cipher1.init(Cipher.DECRYPT_MODE, key, cipherMode)
         val decryptedBytes = cipher1.doFinal(encryptedBytes)
-        println("[KEYSTORE] Decrypted: ${decryptedBytes.toBase64String()}")
+        println("Decrypted: ${decryptedBytes.toBase64String()}")
 
         SessionPassword(decryptedBytes)
     }
@@ -211,8 +214,7 @@ internal class DappSessionKeystore private constructor(
             }
             return securityLevel
         } catch (e: Exception) {
-            Timber.e(e.localizedMessage)
-            e.printStackTrace()
+            logError(e.message ?: "An error occured while checking hardware backed key store.")
             false
         }
     }
@@ -232,8 +234,9 @@ internal class DappSessionKeystore private constructor(
 
         internal fun newInstance(preferences: KeyStorePreferences): DappSessionKeystore {
             return DappSessionKeystore(
-                preferences,
-                defaultDispatcher
+                logger = logger,
+                preferences = preferences,
+                dispatcher = defaultDispatcher
             )
         }
     }
