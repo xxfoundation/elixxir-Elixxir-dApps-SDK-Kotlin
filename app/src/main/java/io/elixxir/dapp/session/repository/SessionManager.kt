@@ -1,12 +1,12 @@
-package io.elixxir.dapp.session.data
+package io.elixxir.dapp.session.repository
 
 import java.io.File
 import io.elixxir.dapp.model.CommonProperties
 import kotlinx.coroutines.*
 
 /**
- * Responsible for creation & deletion of folder used to persist Cmix session.
- * Only needs to be created once per app installation.
+ * Responsible for creation, deletion & storage of folder used to persist
+ * Cmix session. Only needs to be created once per app installation.
  */
 internal interface SessionManager {
     val sessionFolder: File

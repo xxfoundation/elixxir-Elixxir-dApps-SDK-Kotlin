@@ -1,4 +1,4 @@
-package io.elixxir.dapp.session.data
+package io.elixxir.dapp.session.repository
 
 import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
