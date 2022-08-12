@@ -61,8 +61,6 @@ internal class DappSessionManager private constructor(
     }
 
     companion object {
-        internal fun newInstance(properties: CommonProperties): SessionManager {
-            return DappSessionManager(properties)
-        }
+        internal fun newInstance(properties: CommonProperties) = DappSessionManager(properties)
     }
 }

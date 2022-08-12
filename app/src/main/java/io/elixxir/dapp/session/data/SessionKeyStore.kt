@@ -5,15 +5,12 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyInfo
 import android.security.keystore.KeyProperties
 import bindings.Bindings
-import io.elixxir.dapp.DappSdk.Companion.defaultDispatcher
-import io.elixxir.dapp.DappSdk.Companion.logger
-import io.elixxir.dapp.logger.data.Logger
+import io.elixxir.dapp.model.CommonProperties
 import io.elixxir.dapp.preferences.KeyStorePreferences
 import io.elixxir.dapp.session.model.SecureHardwareException
 import io.elixxir.dapp.session.model.SessionPassword
 import io.elixxir.dapp.util.fromBase64toByteArray
 import io.elixxir.dapp.util.toBase64String
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 import java.security.*
 import java.security.spec.MGF1ParameterSpec
@@ -32,10 +29,9 @@ internal interface SessionKeyStore {
 }
 
 internal class DappSessionKeystore private constructor(
-    logger: Logger,
+    properties: CommonProperties,
     private val preferences: KeyStorePreferences,
-    private val dispatcher: CoroutineDispatcher
-) : SessionKeyStore, Logger by logger {
+) : SessionKeyStore, CommonProperties by properties {
 
     override suspend fun createSessionPassword(requireSecureHardware: Boolean): Result<Unit> =
         withContext(dispatcher) {
@@ -232,12 +228,7 @@ internal class DappSessionKeystore private constructor(
         )
         private const val PASSWORD_LENGTH = 64L
 
-        internal fun newInstance(preferences: KeyStorePreferences): DappSessionKeystore {
-            return DappSessionKeystore(
-                logger = logger,
-                preferences = preferences,
-                dispatcher = defaultDispatcher
-            )
-        }
+        internal fun newInstance(properties: CommonProperties, preferences: KeyStorePreferences) =
+            DappSessionKeystore(properties, preferences)
     }
 }
