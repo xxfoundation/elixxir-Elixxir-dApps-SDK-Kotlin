@@ -9,7 +9,7 @@ internal interface Logger {
     fun logFatal(message: String) = log(message, LogLevel.Fatal)
     fun logWarn(message: String) = log(message, LogLevel.Warn)
     fun log(message: String, level: LogLevel = LogLevel.Debug): () -> Unit = {
-        if (config.logLevel.code < level.code) {
+        if (config.logLevel <= level) {
             config.logWriter(message)
         }
     }
