@@ -2,7 +2,7 @@ package io.elixxir.dapp.model
 
 import io.elixxir.dapp.android.model.AndroidConfig
 import io.elixxir.dapp.logger.model.LoggerConfig
-import io.elixxir.dapp.session.model.NdfConfig
+import io.elixxir.dapp.session.model.NetworkConfig
 
 /**
  * Describes configurable options, and satisfies dependencies for,
@@ -11,5 +11,5 @@ import io.elixxir.dapp.session.model.NdfConfig
 interface DappConfig {
     val androidConfig: AndroidConfig
     val loggerConfig: LoggerConfig
-    val ndfConfig: NdfConfig
+    val networkConfig: NetworkConfig
 }

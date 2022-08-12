@@ -5,17 +5,17 @@ import io.elixxir.dapp.R
 import io.elixxir.dapp.model.CriticalRemoteDataStrategy
 import io.elixxir.dapp.model.RetryStrategy
 
-interface NdfConfig {
+interface NetworkConfig {
     val environment: Environment get() = Environment.MainNet
     val retryStrategy: RetryStrategy get() = CriticalRemoteDataStrategy()
 }
 
-internal abstract class NdfSettings : NdfConfig {
+internal abstract class NdfSettings : NetworkConfig {
     abstract val ndfUrl: String
     abstract val certificateRef: Int
 
     companion object {
-        fun create(config: NdfConfig): NdfSettings {
+        fun create(config: NetworkConfig): NdfSettings {
             return when (config.environment) {
                 Environment.MainNet -> MainNet(config.retryStrategy)
                 Environment.ReleaseNet -> ReleaseNet(config.retryStrategy)
