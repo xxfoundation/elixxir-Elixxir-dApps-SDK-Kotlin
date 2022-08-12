@@ -4,7 +4,7 @@ import androidx.annotation.RawRes
 import bindings.Bindings
 import io.elixxir.dapp.model.CommonProperties
 import io.elixxir.dapp.model.RetryStrategy
-import io.elixxir.dapp.session.model.NdfSettings
+import io.elixxir.dapp.network.model.NdfSettings
 import kotlinx.coroutines.*
 typealias Ndf = String
 

@@ -1,21 +1,28 @@
-package io.elixxir.dapp.networking.data
+package io.elixxir.dapp.network.data
 
-import bindings.AuthCallbacks
 import bindings.Bindings
 import bindings.Cmix
+import io.elixxir.dapp.model.CommonProperties
+import io.elixxir.dapp.network.model.*
 import io.elixxir.dapp.session.model.*
 import kotlinx.coroutines.withContext
 
-class Networking(private val cmix: Cmix) {
+internal interface NetworkManager {
+
+}
+
+internal class DappNetworkManager private constructor(
+    properties: CommonProperties
+): NetworkManager, CommonProperties by properties {
 
     private fun login(
         cmixId: Long,
-        authCallbacks: AuthCallbacks,
+        authCallbacks: AuthCallbacksMediator,
         identity: ReceptionIdentity,
         e2eParamsJson: E2eParams
     ): E2eMediator {
         return E2eMediator(
-            Bindings.login(cmixId, authCallbacks, identity.value, e2eParamsJson.value)
+            Bindings.login(cmixId, authCallbacks.value, identity.value, e2eParamsJson.value)
         )
     }
 
@@ -59,5 +66,9 @@ class Networking(private val cmix: Cmix) {
 
     private fun initUserDiscovery() {
 
+    }
+
+    companion object {
+        internal fun newInstance(properties: CommonProperties) = DappNetworkManager(properties)
     }
 }

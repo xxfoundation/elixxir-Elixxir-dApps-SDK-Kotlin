@@ -1,4 +1,4 @@
-package io.elixxir.dapp.session.model
+package io.elixxir.dapp.network.model
 
 import androidx.annotation.RawRes
 import io.elixxir.dapp.R
