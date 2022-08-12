@@ -1,6 +1,4 @@
-package io.elixxir.dapp.logger
-
-import io.elixxir.dapp.logger.models.LogLevel
+package io.elixxir.dapp.logger.model
 
 interface LoggerConfig {
     val logLevel: LogLevel

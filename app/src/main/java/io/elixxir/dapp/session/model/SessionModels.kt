@@ -1,4 +1,4 @@
-package io.elixxir.dapp.session.models
+package io.elixxir.dapp.session.model
 
 import bindings.Cmix
 import bindings.E2e
@@ -17,7 +17,3 @@ value class ReceptionIdentity(val value: ByteArray)
 
 @JvmInline
 value class E2eParams(val value: ByteArray)
-
-enum class Environment {
-    MainNet, ReleaseNet
-}

@@ -1,6 +1,7 @@
-package io.elixxir.dapp.logger.models
+package io.elixxir.dapp.logger.model
 
 enum class LogLevel(val code: Int) {
+    None(Int.MAX_VALUE),
     Trace(0),
     Debug(1),
     Info(2),

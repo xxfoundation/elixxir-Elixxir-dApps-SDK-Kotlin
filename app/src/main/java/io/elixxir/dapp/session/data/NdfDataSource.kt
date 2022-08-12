@@ -1,9 +1,14 @@
 package io.elixxir.dapp.session.data
 
-import android.app.Application
+import android.content.Context
+import androidx.annotation.RawRes
 import bindings.Bindings
-import io.elixxir.dapp.R
-import io.elixxir.dapp.session.models.Environment
+import io.elixxir.dapp.DappSdk.Companion.context
+import io.elixxir.dapp.DappSdk.Companion.defaultDispatcher
+import io.elixxir.dapp.DappSdk.Companion.logger
+import io.elixxir.dapp.logger.data.Logger
+import io.elixxir.dapp.model.RetryStrategy
+import io.elixxir.dapp.session.model.NdfSettings
 import kotlinx.coroutines.*
 typealias Ndf = String
 
@@ -11,35 +16,29 @@ interface NdfDataSource {
     suspend fun fetchNdf(): Ndf
 }
 
-class RemoteNdfDataSource internal constructor(
-    private val app: Application,
-    private val environment: Environment,
-    private val defaultDispatcher: CoroutineDispatcher = Dispatchers.IO
-) : NdfDataSource {
+internal class RemoteNdfDataSource constructor(
+    logger: Logger,
+    private val context: () -> Context,
+    private val dispatcher: CoroutineDispatcher,
+    private val settings: NdfSettings
+) : NdfDataSource,
+    Logger by logger,
+    RetryStrategy by settings.retryStrategy
+{
 
     override suspend fun fetchNdf(): Ndf {
         return retryFetchNdf()
     }
 
-    private suspend fun retryFetchNdf(retries: Int = 0): Ndf = withContext(defaultDispatcher) {
-        val ndf = when (environment) {
-            Environment.MainNet -> {
-                downloadAndVerifySignedNdfWithUrl(
-                    NDF_URL_MAINNET,
-                    certificateFor(Environment.MainNet)
-                )
-            }
-            Environment.ReleaseNet -> {
-                downloadAndVerifySignedNdfWithUrl(
-                    NDF_URL_RELEASE,
-                    certificateFor(Environment.ReleaseNet)
-                )
-            }
-        }
+    private suspend fun retryFetchNdf(retries: Int = 0): Ndf = withContext(dispatcher) {
+        val ndf = downloadAndVerifySignedNdfWithUrl(
+            settings.ndfUrl,
+            readCertificate(settings.certificateRef)
+        )
 
-        if (ndf.isEmpty() && retries <= NDF_MAX_RETRIES) {
+        if (ndf.isEmpty() && retries <= maxRetries) {
             ensureActive()
-            delay(NDF_POLL_INTERVAL_MS)
+            delay(retryDelayMs)
             retryFetchNdf(retries + 1)
         } else {
             ndf
@@ -51,22 +50,22 @@ class RemoteNdfDataSource internal constructor(
         certificate: String
     ): Ndf = String(Bindings.downloadAndVerifySignedNdfWithUrl(url, certificate))
 
-    private fun certificateFor(environment: Environment): String {
-        val certFile: Int = when (environment) {
-            Environment.MainNet -> R.raw.mainnet
-            Environment.ReleaseNet -> R.raw.release
-        }
-        val reader= app.resources.openRawResource(certFile)
+    private fun readCertificate(@RawRes certRef: Int): String {
+        val reader= context().resources.openRawResource(certRef)
             .bufferedReader()
         return reader.use { reader.readText() }
     }
 
     companion object {
-        private const val NDF_URL_MAINNET =
-            "https://elixxir-bins.s3.us-west-1.amazonaws.com/ndf/mainnet.json"
-        private const val NDF_URL_RELEASE =
-            "https://elixxir-bins.s3.us-west-1.amazonaws.com/ndf/release.json"
-        private const val NDF_MAX_RETRIES = 29
-        private const val NDF_POLL_INTERVAL_MS = 1000L
+        internal fun newInstance(settings: NdfSettings): NdfDataSource {
+            return with(settings) {
+                RemoteNdfDataSource(
+                    logger = logger,
+                    context = context,
+                    dispatcher = defaultDispatcher,
+                    settings = this
+                )
+            }
+        }
     }
 }

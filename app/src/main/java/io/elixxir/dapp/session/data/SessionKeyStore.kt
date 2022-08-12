@@ -6,9 +6,9 @@ import android.security.keystore.KeyInfo
 import android.security.keystore.KeyProperties
 import bindings.Bindings
 import io.elixxir.dapp.preferences.KeyStorePreferences
-import io.elixxir.dapp.session.models.SessionPassword
-import io.elixxir.dapp.utils.fromBase64toByteArray
-import io.elixxir.dapp.utils.toBase64String
+import io.elixxir.dapp.session.model.SessionPassword
+import io.elixxir.dapp.util.fromBase64toByteArray
+import io.elixxir.dapp.util.toBase64String
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -33,7 +33,7 @@ class SecureHardwareException : Exception() {
         get() = "OS is not hardware-backed and require secure hardware is enabled."
 }
 
-class DAppSessionKeystore private constructor(
+class DappSessionKeystore private constructor(
     private val preferences: KeyStorePreferences,
     private val defaultDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : SessionKeyStore {
@@ -236,6 +236,6 @@ class DAppSessionKeystore private constructor(
 
         internal fun newInstance(
             preferences: KeyStorePreferences,
-        ): DAppSessionKeystore = DAppSessionKeystore(preferences)
+        ): DappSessionKeystore = DappSessionKeystore(preferences)
     }
 }

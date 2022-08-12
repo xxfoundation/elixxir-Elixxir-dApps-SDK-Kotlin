@@ -1,4 +1,4 @@
-package io.elixxir.dapp.utils
+package io.elixxir.dapp.util
 
 import android.util.Base64
 

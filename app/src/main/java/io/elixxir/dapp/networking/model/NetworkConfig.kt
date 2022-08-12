@@ -1,4 +1,4 @@
-package io.elixxir.dapp.networking
+package io.elixxir.dapp.networking.model
 
 interface NetworkConfig {
     // Main or Alt UD
