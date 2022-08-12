@@ -28,11 +28,7 @@ interface SessionKeyStore {
     suspend fun rsaDecryptPassword(): SessionPassword
 }
 
-class SecureHardwareException : Exception() {
-    override val message: String
-        get() = "OS is not hardware-backed and require secure hardware is enabled."
-}
-
+internal class DappSessionKeystore private constructor(
 class DappSessionKeystore private constructor(
     private val preferences: KeyStorePreferences,
     private val dispatcher: CoroutineDispatcher
