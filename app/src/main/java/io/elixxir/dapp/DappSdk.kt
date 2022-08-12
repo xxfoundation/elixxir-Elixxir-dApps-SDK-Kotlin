@@ -19,13 +19,12 @@ class DappSdk private constructor(
     LoggerConfig by config.loggerConfig
 {
 
-
     companion object {
         internal val logger: Logger by lazy {
             Logger.newInstance(instance!!)
         }
         internal val defaultDispatcher: CoroutineDispatcher by lazy {
-            instance!!.defaultDispatcher
+            instance!!.dispatcher
         }
         internal val context: () -> Context get() = instance!!.context
 

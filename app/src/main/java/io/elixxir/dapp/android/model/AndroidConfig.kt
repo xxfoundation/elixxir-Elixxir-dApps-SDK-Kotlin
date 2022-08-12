@@ -8,5 +8,5 @@ import kotlinx.coroutines.CoroutineDispatcher
  */
 interface AndroidConfig {
     val context: () -> Context
-    val defaultDispatcher: CoroutineDispatcher
+    val dispatcher: CoroutineDispatcher
 }
