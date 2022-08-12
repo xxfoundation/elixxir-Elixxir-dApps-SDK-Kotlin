@@ -173,7 +173,7 @@ internal class DappSessionKeystore private constructor(
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, cipherMode)
         val encryptedBytes = cipher.doFinal(pwd)
         log("Encrypted: ${encryptedBytes.toBase64String()}")
-        preferences.userSecret = encryptedBytes.toBase64String()
+        preferences.password = encryptedBytes.toBase64String()
 
         return encryptedBytes
     }
@@ -186,7 +186,7 @@ internal class DappSessionKeystore private constructor(
         BadPaddingException::class
     )
     override suspend fun rsaDecryptPassword(): SessionPassword = withContext(dispatcher) {
-        val encryptedBytes = preferences.userSecret.fromBase64toByteArray()
+        val encryptedBytes = preferences.password.fromBase64toByteArray()
         val key = getPrivateKey()
         val cipher1 = Cipher.getInstance(KEYSTORE_ALGORITHM)
         println("Initializing Decrypt")
