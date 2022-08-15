@@ -1,4 +1,4 @@
-package io.elixxir.dapp.network.model
+package io.elixxir.dapp.bindings.model
 
 internal enum class NetworkFollowerStatus(val code: Long) {
     STOPPED(0),

@@ -2,6 +2,12 @@ package io.elixxir.dapp.network.data
 
 import bindings.Bindings
 import bindings.Cmix
+import io.elixxir.dapp.bindings.data.AuthCallbacksAdapter
+import io.elixxir.dapp.bindings.data.CmixAdapter
+import io.elixxir.dapp.bindings.data.E2e
+import io.elixxir.dapp.bindings.data.E2eAdapter
+import io.elixxir.dapp.bindings.model.E2eParams
+import io.elixxir.dapp.bindings.model.ReceptionIdentity
 import io.elixxir.dapp.model.CommonProperties
 import io.elixxir.dapp.network.model.*
 import io.elixxir.dapp.network.repository.NdfDataSource
@@ -27,11 +33,11 @@ internal class DappNetworkManager private constructor(
 
     fun login(
         cmixId: Long,
-        authCallbacks: AuthCallbacksMediator,
+        authCallbacks: AuthCallbacksAdapter,
         identity: ReceptionIdentity,
         e2eParamsJson: E2eParams
-    ): E2eMediator {
-        return E2eMediator(
+    ): E2e {
+        return E2eAdapter(
             Bindings.login(cmixId, authCallbacks.value, identity.value, e2eParamsJson.value)
         )
     }
@@ -54,8 +60,8 @@ internal class DappNetworkManager private constructor(
         sessionFolderPath: String,
         sessionPassword: SessionPassword,
         cmixParamsJson: E2eParams
-    ): CmixMediator = withContext(dispatcher) {
-        CmixMediator(
+    ): CmixAdapter = withContext(dispatcher) {
+        CmixAdapter(
             Bindings.loadCmix(sessionFolderPath, sessionPassword.value, cmixParamsJson.value)
         )
     }
