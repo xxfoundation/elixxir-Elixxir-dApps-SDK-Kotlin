@@ -1,5 +1,7 @@
 package io.elixxir.dapp.bindings.data
 
+import io.elixxir.dapp.user.model.UserId
+
 internal interface UserDiscovery {
     fun registerUsername(username: String)
     fun registerNickname(nickname: String)
@@ -9,7 +11,7 @@ internal interface UserDiscovery {
     fun removeEmail()
     fun removePhone()
     fun deleteUser()
-    fun findUserById(id: ByteArray)
+    fun findUserById(userId: UserId)
     fun usernameSearch(username: String)
     fun phoneSearch(phone: String)
     fun emailSearch(email: String)

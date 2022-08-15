@@ -1,5 +1,6 @@
 package io.elixxir.dapp.bindings.data
 
+import io.elixxir.dapp.user.model.UserId
 import bindings.UserDiscovery as CoreUserDiscovery
 
 @JvmInline
@@ -36,7 +37,7 @@ internal value class UserDiscoveryAdapter(private val ud: CoreUserDiscovery) : U
         TODO("Not yet implemented")
     }
 
-    override fun findUserById(id: ByteArray) {
+    override fun findUserById(userId: UserId) {
         TODO("Not yet implemented")
     }
 
