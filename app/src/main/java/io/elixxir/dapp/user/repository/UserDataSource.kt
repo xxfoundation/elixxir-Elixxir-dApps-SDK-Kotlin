@@ -1,7 +1,7 @@
 package io.elixxir.dapp.user.repository
 
 import io.elixxir.dapp.bindings.data.UserDiscovery
-import io.elixxir.dapp.model.CommonProperties
+import io.elixxir.dapp.api.model.CommonProperties
 import io.elixxir.dapp.user.model.User
 
 interface UserDataSource {

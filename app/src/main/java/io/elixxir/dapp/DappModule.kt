@@ -3,8 +3,8 @@ package io.elixxir.dapp
 import io.elixxir.dapp.android.model.AndroidConfig
 import io.elixxir.dapp.api.model.*
 import io.elixxir.dapp.logger.data.Logger
-import io.elixxir.dapp.model.CommonProperties
-import io.elixxir.dapp.model.DappConfig
+import io.elixxir.dapp.api.model.CommonProperties
+import io.elixxir.dapp.api.model.DappConfig
 
 /**
  * Singleton entry point to modules provided by the dApp SDK.

@@ -1,7 +1,7 @@
 package io.elixxir.dapp.session.repository
 
 import java.io.File
-import io.elixxir.dapp.model.CommonProperties
+import io.elixxir.dapp.api.model.CommonProperties
 import kotlinx.coroutines.*
 
 /**

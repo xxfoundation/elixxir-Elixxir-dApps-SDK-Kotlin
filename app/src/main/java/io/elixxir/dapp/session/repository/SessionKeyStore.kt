@@ -5,7 +5,7 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyInfo
 import android.security.keystore.KeyProperties
 import bindings.Bindings
-import io.elixxir.dapp.model.CommonProperties
+import io.elixxir.dapp.api.model.CommonProperties
 import io.elixxir.dapp.preferences.KeyStorePreferences
 import io.elixxir.dapp.session.model.SecureHardwareException
 import io.elixxir.dapp.session.model.SessionPassword

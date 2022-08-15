@@ -8,7 +8,7 @@ import io.elixxir.dapp.bindings.data.E2e
 import io.elixxir.dapp.bindings.data.E2eAdapter
 import io.elixxir.dapp.bindings.model.E2eParams
 import io.elixxir.dapp.bindings.model.ReceptionIdentity
-import io.elixxir.dapp.model.CommonProperties
+import io.elixxir.dapp.api.model.CommonProperties
 import io.elixxir.dapp.network.model.*
 import io.elixxir.dapp.network.repository.NdfDataSource
 import io.elixxir.dapp.session.model.*

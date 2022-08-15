@@ -2,8 +2,8 @@ package io.elixxir.dapp.network.repository
 
 import androidx.annotation.RawRes
 import bindings.Bindings
-import io.elixxir.dapp.model.CommonProperties
-import io.elixxir.dapp.model.RetryStrategy
+import io.elixxir.dapp.api.model.CommonProperties
+import io.elixxir.dapp.api.model.RetryStrategy
 import io.elixxir.dapp.network.model.NdfSettings
 import kotlinx.coroutines.*
 typealias Ndf = String

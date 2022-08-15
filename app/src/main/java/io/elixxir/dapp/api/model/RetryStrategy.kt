@@ -1,4 +1,4 @@
-package io.elixxir.dapp.model
+package io.elixxir.dapp.api.model
 
 interface RetryStrategy {
     val maxRetries: Int

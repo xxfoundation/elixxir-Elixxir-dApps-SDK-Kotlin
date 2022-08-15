@@ -2,8 +2,8 @@ package io.elixxir.dapp.network.model
 
 import androidx.annotation.RawRes
 import io.elixxir.dapp.R
-import io.elixxir.dapp.model.CriticalRemoteDataStrategy
-import io.elixxir.dapp.model.RetryStrategy
+import io.elixxir.dapp.api.model.CriticalRemoteDataStrategy
+import io.elixxir.dapp.api.model.RetryStrategy
 
 interface NetworkConfig {
     val environment: Environment get() = Environment.MainNet
