@@ -4,8 +4,8 @@ import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyInfo
 import android.security.keystore.KeyProperties
-import bindings.Bindings
 import io.elixxir.dapp.api.model.CommonProperties
+import io.elixxir.dapp.bindings.data.Bindings
 import io.elixxir.dapp.preferences.KeyStorePreferences
 import io.elixxir.dapp.session.model.SecureHardwareException
 import io.elixxir.dapp.session.model.SessionPassword
@@ -31,6 +31,7 @@ internal interface SessionKeyStore {
 internal class DappSessionKeystore private constructor(
     properties: CommonProperties,
     private val preferences: KeyStorePreferences,
+    private val bindings: Bindings
 ) : SessionKeyStore, CommonProperties by properties {
 
     override suspend fun createSessionPassword(requireSecureHardware: Boolean): Result<Unit> =
@@ -52,23 +53,23 @@ internal class DappSessionKeystore private constructor(
 
     private fun generatePassword() {
         val encryptionTime = measureTimeMillis {
-            val bytesNumber: Long = PASSWORD_LENGTH
+            val passwordLength = PASSWORD_LENGTH
             log("Generating a password...")
-            log("Generating a password with $bytesNumber bytes")
+            log("Generating a password with $passwordLength bytes")
 
-            var secret: ByteArray
+            var secret: SessionPassword
             val generationTime = measureTimeMillis {
                 do {
-                    secret = Bindings.generateSecret(bytesNumber)
+                    secret = bindings.generateSecret(passwordLength)
                     log("Password (Bytearray): $secret")
-                    log("Password (String64): ${secret.toBase64String()}")
+                    log("Password (String64): ${secret.value.toBase64String()}")
 
-                    val isAllZeroes = byteArrayOf(bytesNumber.toByte()).contentEquals(secret)
+                    val isAllZeroes = byteArrayOf(passwordLength.toByte()).contentEquals(secret.value)
                     log("IsAllZeroes: $isAllZeroes")
                 } while (isAllZeroes)
             }
             log("Total generation time: $generationTime ms")
-            rsaEncryptPwd(secret)
+            rsaEncryptPwd(secret.value)
         }
         log("Total encryption time: $encryptionTime ms")
     }
@@ -228,7 +229,10 @@ internal class DappSessionKeystore private constructor(
         )
         private const val PASSWORD_LENGTH = 64L
 
-        internal fun newInstance(properties: CommonProperties, preferences: KeyStorePreferences) =
-            DappSessionKeystore(properties, preferences)
+        internal fun newInstance(
+            properties: CommonProperties,
+            preferences: KeyStorePreferences,
+            bindings: Bindings
+        ) = DappSessionKeystore(properties, preferences, bindings)
     }
 }

@@ -1,6 +1,8 @@
 package io.elixxir.dapp.bindings.data
 
-interface Bindings {
+import io.elixxir.dapp.session.model.SessionPassword
 
+internal interface Bindings {
+    fun generateSecret(byteLength: Long): SessionPassword
 }
 
