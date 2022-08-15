@@ -4,18 +4,28 @@ import bindings.Bindings
 import bindings.Cmix
 import io.elixxir.dapp.model.CommonProperties
 import io.elixxir.dapp.network.model.*
+import io.elixxir.dapp.network.repository.NdfDataSource
 import io.elixxir.dapp.session.model.*
+import io.elixxir.dapp.session.repository.SessionKeyStore
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.withContext
 
 internal interface NetworkManager {
-
+    val connectionStatus: Flow<ConnectionStatus>
 }
 
 internal class DappNetworkManager private constructor(
-    properties: CommonProperties
+    properties: CommonProperties,
+    keyStore: SessionKeyStore,
+    ndfSource: NdfDataSource
 ): NetworkManager, CommonProperties by properties {
 
-    private fun login(
+    override val connectionStatus: Flow<ConnectionStatus> by ::_connectionStatus
+    private val _connectionStatus: MutableStateFlow<ConnectionStatus> =
+        MutableStateFlow(ConnectionStatus.DISCONNECTED)
+
+    fun login(
         cmixId: Long,
         authCallbacks: AuthCallbacksMediator,
         identity: ReceptionIdentity,
@@ -26,7 +36,7 @@ internal class DappNetworkManager private constructor(
         )
     }
 
-    private fun newCmix(
+    fun newCmix(
         ndfJson: String,
         sessionFolderPath: String,
         sessionPassword: SessionPassword,
@@ -40,7 +50,7 @@ internal class DappNetworkManager private constructor(
         )
     }
 
-    private suspend fun loadCmix(
+    suspend fun loadCmix(
         sessionFolderPath: String,
         sessionPassword: SessionPassword,
         cmixParamsJson: E2eParams
@@ -50,25 +60,29 @@ internal class DappNetworkManager private constructor(
         )
     }
 
-    private fun createIdentity(): ReceptionIdentity {
+    fun createIdentity(): ReceptionIdentity {
         return ReceptionIdentity(
             Cmix().makeReceptionIdentity()
         )
     }
 
-    private fun initNetworkFollower() {
+    fun initNetworkFollower() {
 
     }
 
-    private fun stopNetworkFollower() {
+    fun stopNetworkFollower() {
 
     }
 
-    private fun initUserDiscovery() {
+    fun initUserDiscovery() {
 
     }
 
     companion object {
-        internal fun newInstance(properties: CommonProperties) = DappNetworkManager(properties)
+        internal fun newInstance(
+            properties: CommonProperties,
+            keyStore: SessionKeyStore,
+            ndfSource: NdfDataSource
+        ) = DappNetworkManager(properties, keyStore, ndfSource)
     }
 }

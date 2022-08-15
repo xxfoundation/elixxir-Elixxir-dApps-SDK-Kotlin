@@ -6,17 +6,33 @@ import kotlinx.coroutines.*
 
 /**
  * Responsible for creation, deletion & storage of folder used to persist
- * Cmix session. Only needs to be created once per app installation.
+ * Cmix session.
  */
-internal interface SessionManager {
+internal interface SessionDataSource {
     val sessionFolder: File
+
+    fun doesSessionExist(): Boolean
+
+    /**
+     * Only needs to be created once per app installation.
+     * Return the [sessionFolder] if successful.
+     */
     suspend fun createSession(): Result<File>
+
+    /**
+     * Should be called during account deletion.
+     */
     suspend fun deleteSession(): Result<Unit>
+
+    /**
+     * Restore session
+     */
+    suspend fun restoreSession(): Result<Unit>
 }
 
-internal class DappSessionManager private constructor(
+internal class LocalSessionDataSource private constructor(
     properties: CommonProperties
-) : SessionManager, CommonProperties by properties {
+) : SessionDataSource, CommonProperties by properties {
 
     override val sessionFolder: File get() {
         return try {
@@ -26,6 +42,8 @@ internal class DappSessionManager private constructor(
             throw e
         }
     }
+
+    override fun doesSessionExist(): Boolean = sessionFolder.exists()
 
     override suspend fun createSession(): Result<File> = withContext(dispatcher) {
         try {
@@ -60,7 +78,11 @@ internal class DappSessionManager private constructor(
         }
     }
 
+    override suspend fun restoreSession(): Result<Unit> {
+        TODO("Not yet implemented")
+    }
+
     companion object {
-        internal fun newInstance(properties: CommonProperties) = DappSessionManager(properties)
+        internal fun newInstance(properties: CommonProperties) = LocalSessionDataSource(properties)
     }
 }

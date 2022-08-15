@@ -1,4 +1,4 @@
-package io.elixxir.dapp.session.data
+package io.elixxir.dapp.network.repository
 
 import androidx.annotation.RawRes
 import bindings.Bindings
