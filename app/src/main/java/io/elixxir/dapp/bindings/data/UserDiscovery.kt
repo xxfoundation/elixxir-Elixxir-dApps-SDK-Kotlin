@@ -1,6 +1,6 @@
 package io.elixxir.dapp.bindings.data
 
-interface UserDiscovery {
+internal interface UserDiscovery {
     fun registerUsername(username: String)
     fun registerNickname(nickname: String)
     fun registerEmail(email: String)

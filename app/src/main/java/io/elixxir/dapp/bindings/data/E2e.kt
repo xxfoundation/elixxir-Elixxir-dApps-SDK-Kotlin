@@ -1,6 +1,6 @@
 package io.elixxir.dapp.bindings.data
 
-interface E2e {
+internal interface E2e {
 
 }
 
