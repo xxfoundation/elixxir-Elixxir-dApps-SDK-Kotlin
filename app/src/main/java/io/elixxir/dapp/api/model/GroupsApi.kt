@@ -6,8 +6,9 @@ import kotlinx.coroutines.flow.Flow
 interface GroupsApi {
     val groupMessages: Flow<Message>
     fun sendInvitation()
-    fun retryInvitation()
-    fun acceptInvitation()
+    fun resendInvitation()
+    fun joinGroup()
+    fun leaveGroup()
     fun sendMessage()
     fun retryMessage()
 }
