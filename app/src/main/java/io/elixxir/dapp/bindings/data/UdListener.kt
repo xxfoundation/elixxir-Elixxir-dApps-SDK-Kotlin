@@ -1,4 +1,6 @@
-package io.elixxir.dapp.bindings.model
+package io.elixxir.dapp.bindings.data
+
+import io.elixxir.dapp.bindings.model.Contact
 
 internal interface UdListener {
     val onComplete: (Contact?, Exception?) -> Unit

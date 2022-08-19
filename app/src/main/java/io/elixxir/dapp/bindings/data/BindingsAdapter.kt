@@ -4,7 +4,9 @@ import io.elixxir.dapp.bindings.model.*
 import io.elixxir.dapp.bindings.model.E2eParams
 import io.elixxir.dapp.bindings.model.ReceptionIdentity
 import io.elixxir.dapp.logger.model.LoggerConfig
+import io.elixxir.dapp.network.repository.Ndf
 import io.elixxir.dapp.session.model.SessionPassword
+import io.elixxir.dapp.util.toBase64String
 import bindings.Bindings as CoreBindings
 
 internal class BindingsAdapter: Bindings {
@@ -21,20 +23,81 @@ internal class BindingsAdapter: Bindings {
         return SessionPassword(CoreBindings.generateSecret(byteLength))
     }
 
-    override fun loadCmix(): Cmix {
-        TODO("Not yet implemented")
+    override fun loadCmix(
+        sessionFileDirectory: String,
+        sessionPassword: SessionPassword,
+        cmixParams: CmixParams
+    ): Cmix {
+        return CmixAdapter(
+            CoreBindings.loadCmix(
+                sessionFileDirectory,
+                sessionPassword.value,
+                cmixParams.value
+            )
+        )
     }
 
-    override fun login(): E2e {
-        TODO("Not yet implemented")
+    override fun login(
+        cmixId: CmixId,
+        authCallbacks: AuthCallbacksAdapter,
+        receptionIdentity: ReceptionIdentity,
+        e2eParams: E2eParams
+    ): E2e {
+        // TODO: Use factory method to get E2E implementation
+        return E2eAdapter(
+            CoreBindings.login(
+                cmixId.value,
+                authCallbacks.value,
+                receptionIdentity.value,
+                e2eParams.value
+            )
+        )
     }
 
-    override fun getOrCreateUd(): UserDiscovery {
-        TODO("Not yet implemented")
+    override fun getOrCreateUd(
+        e2eId: E2eId,
+        networkFollowerStatus: NetworkFollowerStatus,
+        username: String,
+        signature: RegistrationValidationSignature,
+        udCert: UdCertificate,
+        contact: Contact,
+        udIpAddress: UdIpAddress
+    ): UserDiscovery {
+        // TODO: Use factory method to get UD implementation
+        return UserDiscoveryAdapter(
+            CoreBindings.newOrLoadUd(
+                e2eId.value,
+                { networkFollowerStatus.code },
+                username,
+                signature.value,
+                udCert.value,
+                contact.value,
+                udIpAddress.value
+            )
+        )
     }
 
-    override fun newUdFromBackup(): UserDiscovery {
-        TODO("Not yet implemented")
+    override fun newUdFromBackup(
+        e2eId: E2eId,
+        networkFollowerStatus: NetworkFollowerStatus,
+        emailFact: Fact,
+        phoneFact: Fact,
+        udCert: UdCertificate,
+        contact: Contact,
+        udIpAddress: UdIpAddress
+    ): UserDiscovery {
+        // TODO: Use factory method to get UD implementation
+        return UserDiscoveryAdapter(
+            CoreBindings.newUdManagerFromBackup(
+                e2eId.value,
+                { networkFollowerStatus.code },
+                emailFact.value,
+                phoneFact.value,
+                udCert.value,
+                contact.value,
+                udIpAddress.value
+            )
+        )
     }
 
     override fun newDummyTrafficManager(): DummyTrafficManager {
@@ -42,7 +105,10 @@ internal class BindingsAdapter: Bindings {
     }
 
     override fun registerLogger(loggerConfig: LoggerConfig) {
-        TODO("Not yet implemented")
+        with (loggerConfig) {
+            CoreBindings.logLevel(logLevel.code)
+            CoreBindings.registerLogWriter(logWriter)
+        }
     }
 
     override fun initializeBackup(): Backup {
@@ -53,11 +119,22 @@ internal class BindingsAdapter: Bindings {
         TODO("Not yet implemented")
     }
 
-    override fun fetchSignedNdf(): SignedNdf {
-        TODO("Not yet implemented")
+    override fun fetchSignedNdf(
+        url: String,
+        cert: String
+    ): Ndf {
+        return CoreBindings.downloadAndVerifySignedNdfWithUrl(url, cert).toBase64String()
     }
 
-    override fun getReceptionIdentity(): ReceptionIdentity {
-        TODO("Not yet implemented")
+    override fun getReceptionIdentity(
+        key: SessionPassword,
+        cmixId: CmixId
+    ): ReceptionIdentity {
+        return ReceptionIdentity(
+            CoreBindings.loadReceptionIdentity(
+                key.value.toBase64String(),
+                cmixId.value
+            )
+        )
     }
 }

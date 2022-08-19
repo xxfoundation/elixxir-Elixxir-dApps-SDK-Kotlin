@@ -1,6 +1,6 @@
 package io.elixxir.dapp.logger.model
 
-enum class LogLevel(val code: Int) {
+enum class LogLevel(val code: Long) {
     Trace(0),
     Debug(1),
     Info(2),
@@ -8,10 +8,10 @@ enum class LogLevel(val code: Int) {
     Error(4),
     Critical(5),
     Fatal(6),
-    None(Int.MAX_VALUE);
+    None(Long.MAX_VALUE);
 
     companion object {
-        fun from(code: Int): LogLevel {
+        fun from(code: Long): LogLevel {
             return values().firstOrNull {
                 it.code == code
             } ?: throw(IllegalArgumentException("Invalid code"))

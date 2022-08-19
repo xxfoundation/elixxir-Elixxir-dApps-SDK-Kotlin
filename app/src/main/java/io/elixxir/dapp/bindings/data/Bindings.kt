@@ -3,6 +3,7 @@ package io.elixxir.dapp.bindings.data
 import io.elixxir.dapp.bindings.model.*
 import io.elixxir.dapp.bindings.model.E2eParams
 import io.elixxir.dapp.logger.model.LoggerConfig
+import io.elixxir.dapp.network.repository.Ndf
 import io.elixxir.dapp.session.model.SessionPassword
 
 internal interface Bindings {
@@ -13,13 +14,38 @@ internal interface Bindings {
 
     fun generateSecret(byteLength: Long): SessionPassword
 
-    fun loadCmix(): Cmix
+    fun loadCmix(
+        sessionFileDirectory: String,
+        sessionPassword: SessionPassword,
+        cmixParams: CmixParams
+    ): Cmix
 
-    fun login(): E2e
+    fun login(
+        cmixId: CmixId,
+        authCallbacks: AuthCallbacksAdapter,
+        receptionIdentity: ReceptionIdentity,
+        e2eParams: E2eParams
+    ): E2e
 
-    fun getOrCreateUd(): UserDiscovery
+    fun getOrCreateUd(
+        e2eId: E2eId,
+        networkFollowerStatus: NetworkFollowerStatus,
+        username: String,
+        signature: RegistrationValidationSignature,
+        udCert: UdCertificate,
+        contact: Contact,
+        udIpAddress: UdIpAddress
+    ): UserDiscovery
 
-    fun newUdFromBackup(): UserDiscovery
+    fun newUdFromBackup(
+        e2eId: E2eId,
+        networkFollowerStatus: NetworkFollowerStatus,
+        emailFact: Fact,
+        phoneFact: Fact,
+        udCert: UdCertificate,
+        contact: Contact,
+        udAddress: UdIpAddress
+    ): UserDiscovery
 
     fun newDummyTrafficManager(): DummyTrafficManager
 
@@ -29,8 +55,14 @@ internal interface Bindings {
 
     fun resumeBackup(): Backup
 
-    fun fetchSignedNdf(): SignedNdf
+    fun fetchSignedNdf(
+        url: String,
+        cert: String
+    ): Ndf
 
-    fun getReceptionIdentity(): ReceptionIdentity
+    fun getReceptionIdentity(
+        key: SessionPassword,
+        cmixId: CmixId
+    ): ReceptionIdentity
 }
 
