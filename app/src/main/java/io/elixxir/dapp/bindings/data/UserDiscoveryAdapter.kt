@@ -1,9 +1,11 @@
 package io.elixxir.dapp.bindings.data
 
+import bindings.Bindings
 import io.elixxir.dapp.bindings.model.*
 import io.elixxir.dapp.bindings.model.Contact
 import io.elixxir.dapp.bindings.model.Fact
 import io.elixxir.dapp.bindings.model.FactsList
+import io.elixxir.dapp.user.model.UserId
 import bindings.UserDiscovery as CoreUserDiscovery
 
 @JvmInline
@@ -53,5 +55,49 @@ internal value class UserDiscoveryAdapter(private val ud: CoreUserDiscovery) : U
 
     override fun deleteUser() {
         ud.permanentDeleteAccount(ud.contact)
+    }
+
+    override fun findUserById(userId: UserId): Result<Contact> {
+        Bindings.lookupUD(
+            E2eId.placeholder,
+            userId.value,
+            UdSearchResultListener.placeholder,
+            LookupId.placeholder,
+            SearchParams.placeholder
+        )
+        return Result.success(Contact(byteArrayOf()))
+    }
+
+    override fun usernameSearch(username: String): Result<Contact> {
+        Bindings.searchUD(
+            E2eId.placeholder,
+            Contact.placeholder,
+            UdSearchResultListener.placeholder,
+            FactsList.placeholder,
+            SearchParams.placeholder,
+        )
+        return Result.success(Contact(byteArrayOf()))
+    }
+
+    override fun phoneSearch(phone: String): Result<Contact> {
+        Bindings.searchUD(
+            E2eId.placeholder,
+            Contact.placeholder,
+            UdSearchResultListener.placeholder,
+            FactsList.placeholder,
+            SearchParams.placeholder,
+        )
+        return Result.success(Contact(byteArrayOf()))
+    }
+
+    override fun emailSearch(email: String): Result<Contact> {
+        Bindings.searchUD(
+            E2eId.placeholder,
+            Contact.placeholder,
+            UdSearchResultListener.placeholder,
+            FactsList.placeholder,
+            SearchParams.placeholder,
+        )
+        return Result.success(Contact(byteArrayOf()))
     }
 }
