@@ -1,55 +1,57 @@
 package io.elixxir.dapp.bindings.data
 
-import io.elixxir.dapp.user.model.UserId
+import io.elixxir.dapp.bindings.model.*
+import io.elixxir.dapp.bindings.model.Contact
+import io.elixxir.dapp.bindings.model.Fact
+import io.elixxir.dapp.bindings.model.FactsList
 import bindings.UserDiscovery as CoreUserDiscovery
 
 @JvmInline
 internal value class UserDiscoveryAdapter(private val ud: CoreUserDiscovery) : UserDiscovery {
+
+    override fun getContact(): Contact {
+        return Contact(ud.contact)
+    }
+
+    override fun getFacts(): FactsList {
+        return FactsList(ud.facts)
+    }
+
     override fun registerUsername(username: String) {
         TODO("Not yet implemented")
     }
 
-    override fun registerNickname(nickname: String) {
-        TODO("Not yet implemented")
+    override fun registerEmail(email: String): ConfirmationId{
+        return ConfirmationId(
+            ud.sendRegisterFact(Fact.placeholder)
+        )
     }
 
-    override fun registerEmail(email: String) {
-        TODO("Not yet implemented")
+    override fun registerPhone(phone: String): ConfirmationId {
+        return ConfirmationId(
+            ud.sendRegisterFact(Fact.placeholder)
+        )
     }
 
-    override fun registerPhone(phone: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun confirmTwoFactorAuth(tfaId: String, tfaCode: String) {
-        TODO("Not yet implemented")
+    override fun confirmTwoFactorAuth(
+        confirmationId: ConfirmationId,
+        confirmationCode: ConfirmationCode
+    ) {
+        ud.confirmFact(
+            confirmationId.value,
+            confirmationCode.value
+        )
     }
 
     override fun removeEmail() {
-        TODO("Not yet implemented")
+        ud.removeFact(Fact.placeholder)
     }
 
     override fun removePhone() {
-        TODO("Not yet implemented")
+        ud.removeFact(Fact.placeholder)
     }
 
     override fun deleteUser() {
-        TODO("Not yet implemented")
-    }
-
-    override fun findUserById(userId: UserId) {
-        TODO("Not yet implemented")
-    }
-
-    override fun usernameSearch(username: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun phoneSearch(phone: String) {
-        TODO("Not yet implemented")
-    }
-
-    override fun emailSearch(email: String) {
-        TODO("Not yet implemented")
+        ud.permanentDeleteAccount(ud.contact)
     }
 }
