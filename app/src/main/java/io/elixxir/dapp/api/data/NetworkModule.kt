@@ -20,11 +20,11 @@ internal class NetworkModule(
 
     override val connectionStatus: Flow<ConnectionStatus> by networkManager::connectionStatus
 
-    override fun connect() {
+    override fun connect(): Result<ConnectionStatus> {
         TODO("Not yet implemented")
     }
 
-    override fun disconnect() {
+    override fun disconnect(): Result<ConnectionStatus> {
         TODO("Not yet implemented")
     }
 }

@@ -5,6 +5,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface NetworkApi {
     val connectionStatus: Flow<ConnectionStatus>
-    fun connect()
-    fun disconnect()
+    fun connect(): Result<ConnectionStatus>
+    fun disconnect(): Result<ConnectionStatus>
 }

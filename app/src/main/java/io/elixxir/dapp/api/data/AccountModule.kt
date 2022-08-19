@@ -1,7 +1,10 @@
 package io.elixxir.dapp.api.data
 
 import io.elixxir.dapp.api.model.AccountApi
+import io.elixxir.dapp.backup.model.Backup
 import io.elixxir.dapp.session.repository.SessionDataSource
+import io.elixxir.dapp.user.model.User
+import io.elixxir.dapp.user.model.UserUpdateData
 import kotlinx.coroutines.*
 
 internal class AccountModule(
@@ -13,7 +16,7 @@ internal class AccountModule(
                 + Dispatchers.Default
     )
 
-    override fun getCurrentUser() {
+    override fun getCurrentUser(): User {
         TODO("Not yet implemented")
     }
 
@@ -23,13 +26,11 @@ internal class AccountModule(
         }
     }
 
-    override fun restoreAccount() {
-        scope.launch {
-            sessionManager.restoreSession()
-        }
+    override fun restoreAccount(backup: Backup) {
+        TODO("Not yet implemented")
     }
 
-    override fun updateAccount() {
+    override fun updateAccount(updateData: UserUpdateData) {
         TODO("Not yet implemented")
     }
 
