@@ -1,4 +1,4 @@
 package io.elixxir.dapp.bindings.model
 
-class NodeRegistrationStatus {
-}
+@JvmInline
+internal value class NodeRegistrationStatus(val value: ByteArray)
