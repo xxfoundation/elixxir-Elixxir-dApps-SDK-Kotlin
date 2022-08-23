@@ -11,6 +11,7 @@ object Libs {
     const val COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-android"
     const val ESPRESSO_CORE = "androidx.test.espresso:espresso-core"
     const val EXT_JUNIT = "androidx.test.ext:junit"
+    const val GSON = "com.google.code.gson:gson"
     const val JUNIT = "junit:junit"
     const val TIMBER = "com.jakewharton.timber:timber"
     const val TRUTH = "com.google.truth:truth"

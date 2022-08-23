@@ -7,6 +7,7 @@ val core = "1.7.0"
 val coroutines = "1.3.9"
 val espresso = "3.4.0"
 val extJunit = "1.1.3"
+val gson = "2.8.6"
 val junit = "4.13.2"
 val timber = "5.0.1"
 val truth = "1.1.3"
@@ -17,6 +18,7 @@ dependencies {
         api("${Libs.COROUTINES}:$coroutines")
         api("${Libs.ESPRESSO_CORE}:$espresso")
         api("${Libs.EXT_JUNIT}:$extJunit")
+        api("${Libs.GSON}:$gson")
         api("${Libs.JUNIT}:$junit")
         api("${Libs.TIMBER}:$timber")
         api("${Libs.TRUTH}:$truth")

@@ -42,6 +42,7 @@ dependencies {
 
     implementation(Libs.CORE_KTX)
     implementation(Libs.COROUTINES)
+    implementation(Libs.GSON)
     implementation(Libs.TIMBER)
 
     testImplementation(Libs.JUNIT)
