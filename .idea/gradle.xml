@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/cmix" />
             <option value="$PROJECT_DIR$/depconstraints" />
+            <option value="$PROJECT_DIR$/xxclient" />
           </set>
         </option>
       </GradleProjectSettings>
