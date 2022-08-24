@@ -1,7 +1,7 @@
 package io.elixxir.xxclient.callbacks
 
 import bindings.ReceiveFileCallback
-import io.elixxir.xxclient.models.InvalidDataException
+import io.elixxir.xxclient.utils.parse
 import java.lang.Exception
 typealias Payload = ByteArray
 
@@ -14,12 +14,8 @@ open class ReceiveFileCallbackAdapter(
 ) : ReceiveFileCallback {
 
     override fun callback(payload: ByteArray?, error: Exception?) {
-        val result: Result<Payload> = error?.let {
-            Result.failure(it)
-        } ?: payload?.let {
-            Result.success(payload)
-        } ?: Result.failure(InvalidDataException())
-
-        listener.onFileReceived(result)
+        listener.onFileReceived(
+            parse(payload, error, Payload::class.java)
+        )
     }
 }
