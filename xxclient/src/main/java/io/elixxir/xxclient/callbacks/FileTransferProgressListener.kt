@@ -3,7 +3,7 @@ package io.elixxir.xxclient.callbacks
 import io.elixxir.xxclient.filetransfer.FilePartTracker
 import io.elixxir.xxclient.models.Progress
 
-interface FileTransferProgressCallback {
+interface FileTransferProgressListener {
     fun onProgressUpdate(progress: Result<FileTransferProgress>)
 }
 

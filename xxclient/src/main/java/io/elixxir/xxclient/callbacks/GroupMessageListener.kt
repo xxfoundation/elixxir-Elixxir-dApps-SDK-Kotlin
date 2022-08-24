@@ -1,8 +1,8 @@
 package io.elixxir.xxclient.callbacks
 
-import bindings.GroupChatProcessor as GroupChatBindings
+import bindings.GroupChatProcessor
 
-interface GroupChatProcessor {
+interface GroupMessageListener {
     val name: String
 
     fun onMessageReceived(
@@ -16,8 +16,8 @@ interface GroupChatProcessor {
 }
 
 open class GroupChatProcessorAdapter(
-    protected val groupChatProcessor: GroupChatProcessor
-): GroupChatBindings, GroupChatProcessor by groupChatProcessor {
+    protected val listener: GroupMessageListener
+): GroupChatProcessor, GroupMessageListener by listener {
     override fun process(
         decryptedMessage: ByteArray?,
         message: ByteArray?,
@@ -26,10 +26,10 @@ open class GroupChatProcessorAdapter(
         roundId: Long,
         error: Exception?
     ) {
-        groupChatProcessor.onMessageReceived(
+        listener.onMessageReceived(
             decryptedMessage, message, receptionId, ephemeralId, roundId, error
         )
     }
 
-    override fun string(): String = groupChatProcessor.name
+    override fun string(): String = listener.name
 }
