@@ -6,7 +6,7 @@ import bindings.BroadcastListener as BroadcastListenerBindings
 import io.elixxir.xxclient.models.BroadcastMessage
 
 interface BroadcastListener {
-    fun handle(result: Result<BroadcastMessage>)
+    fun onBroadcast(result: Result<BroadcastMessage>)
 }
 
 open class BroadCastListenerAdapter(

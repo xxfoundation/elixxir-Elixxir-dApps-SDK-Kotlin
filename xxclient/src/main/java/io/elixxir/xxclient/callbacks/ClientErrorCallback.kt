@@ -1,16 +1,19 @@
 package io.elixxir.xxclient.callbacks
 
 import io.elixxir.xxclient.models.ClientError
+import bindings.ClientError as ClientErrorBindings
 
 interface ClientErrorCallback {
-    fun handle(error: ClientError)
+    fun onError(error: ClientError)
 }
 
 open class ClientErrorCallbackAdapter(
     protected val callback: ClientErrorCallback
-) : ClientErrorCallback by callback, bindings.ClientError {
+) : ClientErrorCallback by callback,
+    ClientErrorBindings
+{
 
     override fun report(source: String?, message: String?, trace: String?) {
-        callback.handle(ClientError(source, message, trace))
+        callback.onError(ClientError(source, message, trace))
     }
 }
