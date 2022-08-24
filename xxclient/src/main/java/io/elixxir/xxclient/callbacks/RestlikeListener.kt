@@ -6,7 +6,7 @@ import io.elixxir.xxclient.utils.parse
 import java.lang.Exception
 
 interface RestlikeListener {
-    fun onReceive(data: Result<RestlikeMessage>)
+    fun handle(data: Result<RestlikeMessage>)
 }
 
 open class RestlikeCallbackAdapter(
@@ -14,7 +14,7 @@ open class RestlikeCallbackAdapter(
 ) : RestlikeCallback {
 
     override fun callback(payload: ByteArray?, error: Exception?) {
-        listener.onReceive(
+        listener.handle(
             parse(payload, error, RestlikeMessage::class.java)
         )
     }

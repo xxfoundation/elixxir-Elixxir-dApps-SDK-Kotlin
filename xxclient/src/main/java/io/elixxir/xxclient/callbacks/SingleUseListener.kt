@@ -6,14 +6,14 @@ import io.elixxir.xxclient.utils.parse
 import java.lang.Exception
 
 interface SingleUseListener {
-    fun onReceive(report: Result<SingleUseReport>)
+    fun handle(report: Result<SingleUseReport>)
 }
 
 open class SingleUseAdapter(
     protected val listener: SingleUseListener
 ) : SingleUseCallback {
     override fun callback(report: ByteArray?, error: Exception?) {
-        listener.onReceive(
+        listener.handle(
             parse(report, error, SingleUseReport::class.java)
         )
     }
