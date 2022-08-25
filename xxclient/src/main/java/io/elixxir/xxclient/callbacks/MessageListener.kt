@@ -1,10 +1,12 @@
 package io.elixxir.xxclient.callbacks
 
 import bindings.Listener
+import io.elixxir.xxclient.models.BindingsModel.Companion.decode
+import io.elixxir.xxclient.models.Message
 
 interface MessageListener {
     val name: String
-    fun onMessageReceived(message: ByteArray)
+    fun onMessageReceived(message: Message)
 }
 
 open class MessageListenerAdapter(
@@ -12,7 +14,9 @@ open class MessageListenerAdapter(
 ) : Listener {
     override fun hear(message: ByteArray?) {
         message?.let {
-            listener.onMessageReceived(it)
+            listener.onMessageReceived(
+                decode(it, Message::class.java)
+            )
         }
     }
 
