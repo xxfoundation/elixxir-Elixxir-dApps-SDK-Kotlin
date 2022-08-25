@@ -1,9 +1,10 @@
 package io.elixxir.xxclient.callbacks
 
 import bindings.ReceiveFileCallback
+import io.elixxir.xxclient.utils.Payload
 import io.elixxir.xxclient.utils.parse
 import java.lang.Exception
-typealias Payload = ByteArray
+
 
 interface FileListener {
     fun onFileReceived(payload: Result<Payload>)
