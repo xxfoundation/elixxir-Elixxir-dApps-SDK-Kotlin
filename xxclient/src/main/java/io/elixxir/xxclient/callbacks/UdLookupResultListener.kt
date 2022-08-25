@@ -6,12 +6,12 @@ import java.lang.Exception
 
 typealias ContactData = ByteArray
 
-interface UdLookupListener {
+interface UdLookupResultListener {
     fun onResponse(response: Result<ContactData>)
 }
 
 open class UdLookupCallbackAdapter(
-    protected val listener: UdLookupListener
+    protected val listener: UdLookupResultListener
 ) : UdLookupCallback {
 
     override fun callback(contactData: ByteArray?, error: Exception?) {
