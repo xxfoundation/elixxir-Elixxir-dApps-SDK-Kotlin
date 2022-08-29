@@ -1,6 +1,9 @@
 package io.elixxir.xxclient.utils
 
 import io.elixxir.xxclient.models.BindingsModel
+import io.elixxir.xxclient.models.BindingsModel.Companion.encode
+import io.elixxir.xxclient.models.Contact
+import io.elixxir.xxclient.models.ContactAdapter
 import io.elixxir.xxclient.models.InvalidDataException
 
 /**
@@ -15,4 +18,8 @@ inline fun <reified T> parse(data: ByteArray?, error: Exception?, model: Class<T
             BindingsModel.decode(it, model)
         )
     } ?: Result.failure(InvalidDataException())
+}
+
+fun Contact.encoded(): ByteArray {
+    return encode(ContactAdapter(data))
 }

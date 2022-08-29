@@ -2,6 +2,7 @@ package io.elixxir.xxclient.models
 
 import bindings.Bindings
 import io.elixxir.xxclient.models.BindingsModel.Companion.decode
+import io.elixxir.xxclient.models.BindingsModel.Companion.encode
 import io.elixxir.xxclient.utils.ContactData
 
 
