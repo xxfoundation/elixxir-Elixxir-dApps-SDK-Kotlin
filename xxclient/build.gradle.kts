@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    compileSdk = Config.COMPILE_SDK
+    compileSdk = 32
 
     defaultConfig {
-        minSdk = Config.MIN_SDK
-        targetSdk = Config.TARGET_SDK
+        minSdk = 26
+        targetSdk = 32
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -36,18 +36,10 @@ dependencies {
     implementation(fileTree(mapOf("include" to listOf("*.jar"), "dir" to "libs")))
     implementation((project(":cmix")))
 
-    api(platform(project(":depconstraints")))
-    kapt(platform(project(":depconstraints")))
-    androidTestApi(platform(project(":depconstraints")))
+    implementation("androidx.core:core-ktx:1.7.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+    implementation("com.google.code.gson:gson:2.8.6")
 
-    implementation(Libs.CORE_KTX)
-    implementation(Libs.COROUTINES)
-    implementation(Libs.GSON)
-    implementation(Libs.TIMBER)
-
-    testImplementation(Libs.JUNIT)
-    testImplementation(Libs.TRUTH)
-
-    androidTestImplementation(Libs.ESPRESSO_CORE)
-    androidTestImplementation(Libs.EXT_JUNIT)
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("com.google.truth:truth:1.1.3")
 }
