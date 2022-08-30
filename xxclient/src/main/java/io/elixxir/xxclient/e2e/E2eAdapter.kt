@@ -127,7 +127,7 @@ open class E2eAdapter(protected val e2e: E2eBindings) : E2e{
             messageType.code,
             receiverId,
             payload,
-            encode(params)
+            params
         )
         return decode(reportData, SendReport::class.java)
     }
