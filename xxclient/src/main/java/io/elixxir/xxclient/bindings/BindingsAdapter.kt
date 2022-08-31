@@ -4,6 +4,7 @@ import io.elixxir.xxclient.backup.Backup
 import io.elixxir.xxclient.backup.BackupAdapter
 import io.elixxir.xxclient.callbacks.*
 import io.elixxir.xxclient.channel.Channel
+import io.elixxir.xxclient.channel.ChannelAdapter
 import io.elixxir.xxclient.cmix.CMix
 import io.elixxir.xxclient.cmix.CMixAdapter
 import io.elixxir.xxclient.dummytraffic.DummyTraffic
@@ -266,25 +267,44 @@ open class BindingsAdapter : Bindings {
         return decode(result, SingleUseReport::class.java)
     }
 
-    override fun newBroadcastChannel(): Channel {
-        TODO()
-//        return ChannelAdapter(
-//            CoreBindings.newBroadcastChannel()
-//        )
+    override fun newBroadcastChannel(cmixId: Long, channelDef: ChannelDef): Channel {
+        return ChannelAdapter(
+            CoreBindings.newBroadcastChannel(cmixId, encode(channelDef))
+        )
     }
 
-    override fun storeReceptionIdentity() {
-        TODO()
-//        CoreBindings.storeReceptionIdentity()
+    override fun storeReceptionIdentity(
+        key: String,
+        identity: ReceptionIdentity,
+        cmixId: Long
+    ) {
+        CoreBindings.storeReceptionIdentity(
+            key,
+            encode(identity),
+            cmixId
+        )
     }
 
-    override fun transmitSingleUse(): ByteArray {
-        TODO()
-//        return CoreBindings.transmitSingleUse()
+    override fun transmitSingleUse(
+        e2eId: E2eId,
+        recipient: Contact,
+        tag: String,
+        payload: Payload,
+        paramsJson: ByteArray,
+        listener: SingleUseResponseListener
+    ): SingleUseReport {
+        val result = CoreBindings.transmitSingleUse(
+            e2eId,
+            recipient.encoded(),
+            tag,
+            payload,
+            paramsJson,
+            SingleUseResponseAdapter(listener)
+        )
+        return decode(result, SingleUseReport::class.java)
     }
 
     override fun updateCommonErrors(errorsJson: String) {
         CoreBindings.updateCommonErrors(errorsJson)
     }
-
 }
