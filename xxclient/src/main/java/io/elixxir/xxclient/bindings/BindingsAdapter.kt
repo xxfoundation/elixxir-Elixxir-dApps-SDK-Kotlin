@@ -2,10 +2,8 @@ package io.elixxir.xxclient.bindings
 
 import io.elixxir.xxclient.backup.Backup
 import io.elixxir.xxclient.backup.BackupAdapter
-import io.elixxir.xxclient.callbacks.AuthCallbacksAdapter
-import io.elixxir.xxclient.callbacks.AuthEventListener
+import io.elixxir.xxclient.callbacks.*
 import io.elixxir.xxclient.channel.Channel
-import io.elixxir.xxclient.channel.ChannelAdapter
 import io.elixxir.xxclient.cmix.CMix
 import io.elixxir.xxclient.cmix.CMixAdapter
 import io.elixxir.xxclient.dummytraffic.DummyTraffic
@@ -15,8 +13,11 @@ import io.elixxir.xxclient.e2e.E2eAdapter
 import io.elixxir.xxclient.filetransfer.FileTransfer
 import io.elixxir.xxclient.filetransfer.FileTransferAdapter
 import io.elixxir.xxclient.models.*
+import io.elixxir.xxclient.models.BackupUpdateListener
 import io.elixxir.xxclient.models.BindingsModel.Companion.decode
 import io.elixxir.xxclient.models.BindingsModel.Companion.encode
+import io.elixxir.xxclient.models.ReceiveFileCallbackAdapter
+import io.elixxir.xxclient.models.UpdateBackupFuncAdapter
 import io.elixxir.xxclient.userdiscovery.UserDiscovery
 import io.elixxir.xxclient.userdiscovery.UserDiscoveryAdapter
 import io.elixxir.xxclient.utils.*
@@ -135,13 +136,19 @@ open class BindingsAdapter : Bindings {
         )
     }
 
-    override fun newDummyTrafficManager(): DummyTraffic {
-        TODO()
-//        return DummyTrafficAdapter(
-//            CoreBindings.newDummyTrafficManager(
-//
-//            )
-//        )
+    override fun newDummyTrafficManager(
+        cmixId: Long,
+        maxNumMessages: Long,
+        avgSendDeltaMS: Long,
+        randomRangeMS: Long
+    ): DummyTraffic {
+        return DummyTrafficAdapter(
+            CoreBindings.newDummyTrafficManager(
+                cmixId,
+                maxNumMessages,
+                avgSendDeltaMS,
+                randomRangeMS)
+        )
     }
 
     override fun registerLogger(logLevel: LogLevel, logWriter: LogWriter) {
@@ -149,31 +156,34 @@ open class BindingsAdapter : Bindings {
         CoreBindings.registerLogWriter(logWriter)
     }
 
-    override fun newBackupManager(): Backup {
-        TODO()
-//        return BackupAdapter(
-//            CoreBindings.initializeBackup(
-//
-//            )
-//        )
+    override fun initializeBackup(
+        e2eId: E2eId,
+        udId: Long,
+        backupPassword: String,
+        updateListener: BackupUpdateListener
+    ): Backup {
+        return BackupAdapter(
+            CoreBindings.initializeBackup(
+                e2eId,
+                udId,
+                backupPassword,
+                UpdateBackupFuncAdapter(updateListener)
+            )
+        )
     }
 
-    override fun initializeBackup(): Backup {
-        TODO()
-//        return BackupAdapter(
-//            CoreBindings.initializeBackup(
-//
-//            )
-//        )
-    }
-
-    override fun resumeBackup(): Backup {
-        TODO()
-//        return BackupAdapter(
-//            CoreBindings.resumeBackup(
-//
-//            )
-//        )
+    override fun resumeBackup(
+        e2eId: E2eId,
+        udId: Long,
+        updateListener: BackupUpdateListener
+    ): Backup {
+        return BackupAdapter(
+            CoreBindings.resumeBackup(
+                e2eId,
+                udId,
+                UpdateBackupFuncAdapter(updateListener)
+            )
+        )
     }
 
     override fun fetchSignedNdf(url: String, cert: String): Ndf {
@@ -187,13 +197,20 @@ open class BindingsAdapter : Bindings {
         )
     }
 
-    override fun newFileTransferManager(): FileTransfer {
-        TODO()
-//        return FileTransferAdapter(
-//            CoreBindings.initFileTransfer(
-//
-//            )
-//        )
+    override fun newFileTransferManager(
+        e2eId: E2eId,
+        incomingFileListener: IncomingFileListener,
+        e2eFileTransferParamsJson: ByteArray,
+        fileTransferParamsJson: ByteArray
+    ): FileTransfer {
+        return FileTransferAdapter(
+            CoreBindings.initFileTransfer(
+                e2eId,
+                ReceiveFileCallbackAdapter(incomingFileListener),
+                e2eFileTransferParamsJson,
+                fileTransferParamsJson
+            )
+        )
     }
 
     override fun getIdFromContact(contactData: ContactData): ByteArray {
@@ -215,15 +232,38 @@ open class BindingsAdapter : Bindings {
         return CoreBindings.setFactsOnContact(contactData, encode(fact))
     }
 
-    override fun searchUd(): ByteArray {
-        TODO()
-
-//        return CoreBindings.searchUD()
+    override fun searchUd(
+        e2eId: E2eId,
+        udContact: Contact,
+        listener: UdSearchResultListener,
+        factsListJson: ByteArray,
+        singleRequestParamsJson: ByteArray
+    ): ContactList {
+        val result = CoreBindings.searchUD(
+                e2eId,
+                udContact.encoded(),
+                UdSearchCallbackAdapter(listener),
+                factsListJson,
+                singleRequestParamsJson
+            )
+        return decode(result, ContactList::class.java)
     }
 
-    override fun lookupUd(): ByteArray {
-        TODO()
-//        return CoreBindings.lookupUD()
+    override fun lookupUd(
+        e2eId: E2eId,
+        udContact: Contact,
+        listener: UdLookupResultListener,
+        lookupId: UserId,
+        singleRequestParamsJson: ByteArray
+    ): SingleUseReport {
+        val result = CoreBindings.lookupUD(
+            e2eId,
+            udContact.encoded(),
+            UdLookupCallbackAdapter(listener),
+            lookupId,
+            singleRequestParamsJson
+        )
+        return decode(result, SingleUseReport::class.java)
     }
 
     override fun newBroadcastChannel(): Channel {

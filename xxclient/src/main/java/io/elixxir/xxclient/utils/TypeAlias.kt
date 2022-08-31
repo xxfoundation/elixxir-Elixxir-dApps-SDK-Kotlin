@@ -19,3 +19,4 @@ typealias Certificate = String
 typealias Signature = ByteArray
 typealias Ndf = ByteArray
 typealias CertificateData = ByteArray
+typealias FileTransferId = Byte

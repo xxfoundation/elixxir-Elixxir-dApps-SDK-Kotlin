@@ -2,6 +2,8 @@ package io.elixxir.xxclient.bindings
 
 import io.elixxir.xxclient.backup.Backup
 import io.elixxir.xxclient.callbacks.AuthEventListener
+import io.elixxir.xxclient.callbacks.UdLookupResultListener
+import io.elixxir.xxclient.callbacks.UdSearchResultListener
 import io.elixxir.xxclient.channel.Channel
 import io.elixxir.xxclient.cmix.CMix
 import io.elixxir.xxclient.dummytraffic.DummyTraffic
@@ -67,15 +69,27 @@ interface Bindings {
         udAddress: String
     ): UserDiscovery
 
-    fun newDummyTrafficManager(): DummyTraffic
+    fun newDummyTrafficManager(
+        cmixId: Long,
+        maxNumMessages: Long,
+        avgSendDeltaMS: Long,
+        randomRangeMS: Long
+    ): DummyTraffic
 
     fun registerLogger(logLevel: LogLevel, logWriter: LogWriter)
 
-    fun newBackupManager(): Backup
+    fun initializeBackup(
+        e2eId: E2eId,
+        udId: Long,
+        backupPassword: String,
+        updateListener: BackupUpdateListener
+    ): Backup
 
-    fun initializeBackup(): Backup
-
-    fun resumeBackup(): Backup
+    fun resumeBackup(
+        e2eId: E2eId,
+        udId: Long,
+        updateListener: BackupUpdateListener
+    ): Backup
 
     fun fetchSignedNdf(
         url: String,
@@ -88,7 +102,10 @@ interface Bindings {
     ): ReceptionIdentity
 
     fun newFileTransferManager(
-
+        e2eId: E2eId,
+        incomingFileListener: IncomingFileListener,
+        e2eFileTransferParamsJson: ByteArray,
+        fileTransferParamsJson: ByteArray
     ): FileTransfer
 
     fun getIdFromContact(contactData: ContactData): ByteArray
@@ -96,9 +113,21 @@ interface Bindings {
     fun getFactsFromContact(contactData: ContactData): Fact
     fun setFactsOnContact(contactData: ContactData, fact: Fact): ContactData
 
-    fun searchUd(): ByteArray
+    fun searchUd(
+        e2eId: E2eId,
+        udContact: Contact,
+        listener: UdSearchResultListener,
+        factsListJson: ByteArray,
+        singleRequestParamsJson: ByteArray
+    ): ContactList
 
-    fun lookupUd(): ByteArray
+    fun lookupUd(
+        e2eId: E2eId,
+        udContact: Contact,
+        listener: UdLookupResultListener,
+        lookupId: UserId,
+        singleRequestParamsJson: ByteArray
+    ): SingleUseReport
 
     fun newBroadcastChannel(): Channel
 
