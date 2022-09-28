@@ -122,7 +122,8 @@ open class BindingsAdapter : Bindings {
         phoneFact: Fact,
         udCert: CertificateData,
         contact: Contact,
-        udAddress: String
+        udAddress: ByteArray,
+        stringArg: String
     ): UserDiscovery {
         return UserDiscoveryAdapter(
             CoreBindings.newUdManagerFromBackup(
@@ -132,7 +133,8 @@ open class BindingsAdapter : Bindings {
                 encode(phoneFact),
                 udCert,
                 contact.encoded(),
-                udAddress
+                udAddress,
+                stringArg
             )
         )
     }

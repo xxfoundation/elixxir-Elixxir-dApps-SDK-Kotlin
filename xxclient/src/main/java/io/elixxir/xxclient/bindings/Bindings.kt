@@ -65,7 +65,8 @@ interface Bindings {
         phoneFact: Fact,
         udCert: CertificateData,
         contact: Contact,
-        udAddress: String
+        udAddress: ByteArray,
+        stringArg: String
     ): UserDiscovery
 
     fun newDummyTrafficManager(

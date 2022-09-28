@@ -14,7 +14,7 @@ interface GroupChat {
     fun getGroup(groupId: ByteArray): Group
     fun getGroups(): List<Group>
     fun makeGroup(membership: ByteArray, message: ByteArray, name: ByteArray): GroupReport
-    fun joinGroup(trackedGroupId: Long)
+    fun joinGroup(trackedGroupId: ByteArray)
     fun leaveGroup(groupId: ByteArray)
     fun resendRequest(groupId: ByteArray): GroupReport
     fun send(groupId: ByteArray, message: ByteArray, tag: String?): GroupSendReport
@@ -50,7 +50,7 @@ open class GroupChatAdapter(
         )
     }
 
-    override fun joinGroup(trackedGroupId: Long) {
+    override fun joinGroup(trackedGroupId: ByteArray) {
         group.joinGroup(trackedGroupId)
     }
 
