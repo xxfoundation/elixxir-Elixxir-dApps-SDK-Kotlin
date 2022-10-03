@@ -12,6 +12,7 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-     
+
+rootProject.name = "Android Wrapper"
 include(":cmix")
 include(":xxclient")
