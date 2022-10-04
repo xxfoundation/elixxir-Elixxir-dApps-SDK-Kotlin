@@ -20,3 +20,5 @@ typealias Signature = ByteArray
 typealias Ndf = ByteArray
 typealias CertificateData = ByteArray
 typealias FileTransferId = Byte
+typealias Data = ByteArray
+typealias UdId = Long
