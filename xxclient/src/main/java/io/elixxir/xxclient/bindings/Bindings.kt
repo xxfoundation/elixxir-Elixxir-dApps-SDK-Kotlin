@@ -134,7 +134,7 @@ interface Bindings {
         listener: UdSearchResultListener,
         factsListJson: ByteArray,
         singleRequestParamsJson: ByteArray
-    ): ContactList
+    ): SingleUseReport
 
     fun lookupUd(
         e2eId: E2eId,

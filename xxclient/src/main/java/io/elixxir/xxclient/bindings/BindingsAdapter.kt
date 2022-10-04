@@ -273,7 +273,7 @@ open class BindingsAdapter : Bindings {
         listener: UdSearchResultListener,
         factsListJson: ByteArray,
         singleRequestParamsJson: ByteArray
-    ): ContactList {
+    ): SingleUseReport {
         val result = CoreBindings.searchUD(
                 e2eId,
                 udContact.encoded(),
@@ -281,7 +281,7 @@ open class BindingsAdapter : Bindings {
                 factsListJson,
                 singleRequestParamsJson
             )
-        return decode(result, ContactList::class.java)
+        return decode(result, SingleUseReport::class.java)
     }
 
     override fun lookupUd(
