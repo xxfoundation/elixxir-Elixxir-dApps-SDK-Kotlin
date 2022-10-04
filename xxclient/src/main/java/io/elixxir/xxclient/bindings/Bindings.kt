@@ -129,6 +129,14 @@ interface Bindings {
         singleRequestParamsJson: ByteArray
     ): SingleUseReport
 
+    fun multiLookupUd(
+        e2eId: E2eId,
+        udContact: Contact,
+        listener: UdMultiLookupResultListener,
+        lookupIds: BindingsList<UserId>,
+        singleRequestParamsJson: ByteArray
+    )
+
     fun newBroadcastChannel(cmixId: Long, channelDef: ChannelDef): Channel
 
     fun storeReceptionIdentity(
@@ -147,4 +155,6 @@ interface Bindings {
     ): SingleUseReport
 
     fun updateCommonErrors(errorsJson: String)
+
+    fun isRegisteredWithUd(e2eId: E2eId): Boolean
 }

@@ -269,6 +269,22 @@ open class BindingsAdapter : Bindings {
         return decode(result, SingleUseReport::class.java)
     }
 
+    override fun multiLookupUd(
+        e2eId: E2eId,
+        udContact: Contact,
+        listener: UdMultiLookupResultListener,
+        lookupIds: BindingsList<UserId>,
+        singleRequestParamsJson: ByteArray
+    ) {
+        CoreBindings.multiLookupUD(
+            e2eId,
+            udContact.encoded(),
+            UdMultiLookupCallbackAdapter(listener),
+            lookupIds.encoded(),
+            singleRequestParamsJson
+        )
+    }
+
     override fun newBroadcastChannel(cmixId: Long, channelDef: ChannelDef): Channel {
         return ChannelAdapter(
             CoreBindings.newBroadcastChannel(cmixId, encode(channelDef))
@@ -308,5 +324,9 @@ open class BindingsAdapter : Bindings {
 
     override fun updateCommonErrors(errorsJson: String) {
         CoreBindings.updateCommonErrors(errorsJson)
+    }
+
+    override fun isRegisteredWithUd(e2eId: E2eId): Boolean {
+        return CoreBindings.isRegisteredWithUD(e2eId)
     }
 }
