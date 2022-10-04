@@ -61,6 +61,38 @@ open class BindingsAdapter : Bindings {
         )
     }
 
+    override fun newCmix(
+        ndfJson: String,
+        sessionFileDirectory: String,
+        cmixParams: CmixParams,
+        registrationCode: String
+    ) {
+        CoreBindings.newCmix(
+            ndfJson,
+            sessionFileDirectory,
+            cmixParams,
+            registrationCode
+        )
+    }
+
+    override fun newCmixFromBackup(
+        ndfJson: String,
+        storageDir: String,
+        backupPassword: String,
+        sessionPassword: Password,
+        backupFileContents: Data
+    ): BackupReport {
+        TODO()
+//        BackupReportAdapter(
+//            CoreBindings.newCmixFromBackup(
+//                ndfJson,
+//                storageDir,
+//                backupPassword,
+//                sessionPassword,
+//                backupFileContents)
+//        )
+    }
+
     override fun login(
         e2eId: E2eId,
         authCallbacks: AuthEventListener,

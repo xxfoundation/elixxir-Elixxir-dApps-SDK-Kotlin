@@ -34,6 +34,21 @@ interface Bindings {
         cmixParams: CmixParams
     ): CMix
 
+    fun newCmix(
+        ndfJson: String,
+        sessionFileDirectory: String,
+        cmixParams: CmixParams,
+        registrationCode: String
+    )
+
+    fun newCmixFromBackup(
+        ndfJson: String,
+        storageDir: String,
+        backupPassword: String,
+        sessionPassword: Password,
+        backupFileContents: Data
+    ): BackupReport
+
     fun login(
         e2eId: E2eId,
         authCallbacks: AuthEventListener,
