@@ -2,13 +2,13 @@ package io.elixxir.xxclient.bindings
 
 import io.elixxir.xxclient.backup.Backup
 import io.elixxir.xxclient.callbacks.*
+import io.elixxir.xxclient.callbacks.BackupUpdateListener
 import io.elixxir.xxclient.channel.Channel
 import io.elixxir.xxclient.cmix.CMix
 import io.elixxir.xxclient.dummytraffic.DummyTraffic
 import io.elixxir.xxclient.e2e.E2e
 import io.elixxir.xxclient.filetransfer.FileTransfer
 import io.elixxir.xxclient.models.*
-import io.elixxir.xxclient.models.BackupUpdateListener
 import io.elixxir.xxclient.userdiscovery.UserDiscovery
 import io.elixxir.xxclient.utils.*
 

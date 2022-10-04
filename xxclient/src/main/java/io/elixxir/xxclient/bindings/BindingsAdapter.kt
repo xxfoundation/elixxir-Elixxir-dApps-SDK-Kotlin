@@ -3,6 +3,8 @@ package io.elixxir.xxclient.bindings
 import io.elixxir.xxclient.backup.Backup
 import io.elixxir.xxclient.backup.BackupAdapter
 import io.elixxir.xxclient.callbacks.*
+import io.elixxir.xxclient.callbacks.BackupUpdateListener
+import io.elixxir.xxclient.callbacks.UpdateBackupFuncAdapter
 import io.elixxir.xxclient.channel.Channel
 import io.elixxir.xxclient.channel.ChannelAdapter
 import io.elixxir.xxclient.cmix.CMix
@@ -14,11 +16,9 @@ import io.elixxir.xxclient.e2e.E2eAdapter
 import io.elixxir.xxclient.filetransfer.FileTransfer
 import io.elixxir.xxclient.filetransfer.FileTransferAdapter
 import io.elixxir.xxclient.models.*
-import io.elixxir.xxclient.models.BackupUpdateListener
 import io.elixxir.xxclient.models.BindingsModel.Companion.decode
 import io.elixxir.xxclient.models.BindingsModel.Companion.encode
 import io.elixxir.xxclient.models.ReceiveFileCallbackAdapter
-import io.elixxir.xxclient.models.UpdateBackupFuncAdapter
 import io.elixxir.xxclient.userdiscovery.UserDiscovery
 import io.elixxir.xxclient.userdiscovery.UserDiscoveryAdapter
 import io.elixxir.xxclient.utils.*
