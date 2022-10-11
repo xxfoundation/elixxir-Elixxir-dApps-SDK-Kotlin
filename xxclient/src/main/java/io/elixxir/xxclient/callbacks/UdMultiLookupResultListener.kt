@@ -2,12 +2,11 @@ package io.elixxir.xxclient.callbacks
 
 import android.util.Log
 import bindings.UdMultiLookupCallback
-import io.elixxir.xxclient.models.BindingsListAdapter
-import io.elixxir.xxclient.models.BindingsModel.Companion.decode
-import io.elixxir.xxclient.models.BindingsModel.Companion.encode
+import io.elixxir.xxclient.models.ContactAdapter
 import io.elixxir.xxclient.models.UdMultiLookupResult
 import io.elixxir.xxclient.utils.UserId
-import io.elixxir.xxclient.utils.parse
+import io.elixxir.xxclient.utils.nonNullResultOf
+import io.elixxir.xxclient.utils.parseArray
 import java.lang.Exception
 
 interface UdMultiLookupResultListener {
@@ -26,17 +25,24 @@ open class UdMultiLookupCallbackAdapter(
         Log.d("array of ContactData", contacts?.decodeToString() ?: "")
         Log.d("failed ids string array", failedIds?.decodeToString() ?: "")
 
+        val contactsResult = parseArray(
+            contacts,
+            error,
+            ContactAdapter::class.java
+        )
+        val failedLookupsResult = parseArray(
+            failedIds,
+            error,
+            UserId::class.java
+        )
+
         listener.onResponse(
-            parse(
-                encode(
-                    UdMultiLookupResult(
-                        decode(contacts, BindingsListAdapter::class.java),
-                        decode(failedIds, BindingsListAdapter<UserId>)
-                    )
-                ),
-                error,
-                UdMultiLookupResult::class.java
-            )
+            nonNullResultOf {
+                UdMultiLookupResult(
+                    contactsResult.getOrThrow(),
+                    failedLookupsResult.getOrThrow(),
+                )
+            }
         )
     }
 
