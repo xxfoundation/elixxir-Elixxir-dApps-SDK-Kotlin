@@ -11,3 +11,12 @@ inline fun <reified E> BindingsList<E>.encoded(): ByteArray {
 class BindingsListAdapter<T>(
     list: List<T>
 ): List<T> by list, BindingsModel, BindingsList<T>
+
+class TestBindingsList() {
+
+    companion object {
+        fun from(data: ByteArray) {
+
+        }
+    }
+}
