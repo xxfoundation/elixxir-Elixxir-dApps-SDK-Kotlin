@@ -23,7 +23,7 @@ open class MessageDeliveryCallbackAdapter(
     private fun onSuccess(roundResults: ByteArray) {
         listener.onMessageSent(
             Result.success(
-                decode(roundResults, RoundResults::class.java)
+                decode(roundResults)
             )
         )
     }

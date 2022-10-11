@@ -227,8 +227,7 @@ open class BindingsAdapter : Bindings {
 
     override fun getReceptionIdentity(key: String, e2eId: E2eId): ReceptionIdentity {
         return decode(
-            CoreBindings.loadReceptionIdentity(key, e2eId),
-            ReceptionIdentity::class.java
+            CoreBindings.loadReceptionIdentity(key, e2eId)
         )
     }
 
@@ -258,8 +257,7 @@ open class BindingsAdapter : Bindings {
 
     override fun getFactsFromContact(contactData: ContactData): Fact {
         return decode(
-            CoreBindings.getFactsFromContact(contactData),
-            Fact::class.java
+            CoreBindings.getFactsFromContact(contactData)
         )
     }
 
@@ -281,7 +279,7 @@ open class BindingsAdapter : Bindings {
                 factsListJson,
                 singleRequestParamsJson
             )
-        return decode(result, SingleUseReport::class.java)
+        return decode(result)
     }
 
     override fun lookupUd(
@@ -298,14 +296,14 @@ open class BindingsAdapter : Bindings {
             lookupId,
             singleRequestParamsJson
         )
-        return decode(result, SingleUseReport::class.java)
+        return decode(result)
     }
 
     override fun multiLookupUd(
         e2eId: E2eId,
         udContact: Contact,
         listener: UdMultiLookupResultListener,
-        lookupIds: BindingsList<UserId>,
+        lookupIds: List<UserId>,
         singleRequestParamsJson: ByteArray
     ) {
         CoreBindings.multiLookupUD(
@@ -351,7 +349,7 @@ open class BindingsAdapter : Bindings {
             paramsJson,
             SingleUseResponseAdapter(listener)
         )
-        return decode(result, SingleUseReport::class.java)
+        return decode(result)
     }
 
     override fun updateCommonErrors(errorsJson: String) {

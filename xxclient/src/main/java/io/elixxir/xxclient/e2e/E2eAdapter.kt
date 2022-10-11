@@ -22,7 +22,7 @@ open class E2eAdapter(protected val e2e: E2eBindings) : E2e{
     }
 
     override fun getAllPartnerIds(): PartnersList {
-        return decode(e2e.allPartnerIDs, PartnersList::class.java)
+        return decode(e2e.allPartnerIDs)
     }
 
     override fun getUdAddressFromNdf(): String {
@@ -76,8 +76,7 @@ open class E2eAdapter(protected val e2e: E2eBindings) : E2e{
 
     override fun getReceivedRequest(partnerId: UserId): Request {
         return decode(
-            e2e.getReceivedRequest(partnerId),
-            Request::class.java
+            e2e.getReceivedRequest(partnerId)
         )
     }
 
@@ -129,7 +128,7 @@ open class E2eAdapter(protected val e2e: E2eBindings) : E2e{
             payload,
             params
         )
-        return decode(reportData, SendReport::class.java)
+        return decode(reportData)
     }
 
     override fun registerListener(

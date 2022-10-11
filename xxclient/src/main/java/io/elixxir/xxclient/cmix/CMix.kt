@@ -46,15 +46,13 @@ open class CMixAdapter(protected val cMix: CMixBindings) : CMix {
 
     override fun makeReceptionIdentity(): ReceptionIdentity {
         return decode(
-            cMix.makeReceptionIdentity(),
-            ReceptionIdentity::class.java
+            cMix.makeReceptionIdentity()
         )
     }
 
     override fun makeLegacyReceptionIdentity(): ReceptionIdentity {
         return decode(
-            cMix.makeLegacyReceptionIdentity(),
-            ReceptionIdentity::class.java
+            cMix.makeLegacyReceptionIdentity()
         )
     }
 
@@ -64,8 +62,7 @@ open class CMixAdapter(protected val cMix: CMixBindings) : CMix {
 
     override fun getNodeRegistrationStatus(): NodeRegistrationReport {
         return decode(
-            cMix.nodeRegistrationStatus,
-            NodeRegistrationReport::class.java
+            cMix.nodeRegistrationStatus
         )
     }
 

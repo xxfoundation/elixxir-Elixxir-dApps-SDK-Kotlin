@@ -15,7 +15,7 @@ open class MessageListenerAdapter(
     override fun hear(message: ByteArray?) {
         message?.let {
             listener.onMessageReceived(
-                decode(it, Message::class.java)
+                decode(it)
             )
         }
     }

@@ -10,10 +10,14 @@ interface BindingsModel {
             return Gson().toJson(model).toByteArray()
         }
 
-        inline fun <reified T> decode(data: ByteArray, model: Class<T>): T {
-//            val typeToken = object : TypeToken<T>() {}.type
-//            return Gson().fromJson(data.toString(), typeToken)
-            return Gson().fromJson(data.toString(), model)
+        inline fun <reified T> encodeArray(list: List<T>): ByteArray {
+            val typeToken = object : TypeToken<List<T>>() {}.type
+            return Gson().toJson(list, typeToken).toByteArray()
+        }
+
+        inline fun <reified T> decode(data: ByteArray): T {
+            val typeToken = object : TypeToken<T>() {}.type
+            return Gson().fromJson(data.toString(), typeToken)
         }
 
         inline fun <reified T> decodeArray(data: ByteArray): List<T> {

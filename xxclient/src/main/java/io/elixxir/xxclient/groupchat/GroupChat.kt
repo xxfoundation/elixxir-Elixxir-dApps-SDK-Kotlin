@@ -4,7 +4,7 @@ import bindings.GroupChat as GroupChatBindings
 import io.elixxir.xxclient.group.Group
 import io.elixxir.xxclient.group.GroupAdapter
 import io.elixxir.xxclient.models.BindingsModel.Companion.decode
-import io.elixxir.xxclient.models.GroupList
+import io.elixxir.xxclient.models.BindingsModel.Companion.decodeArray
 import io.elixxir.xxclient.models.GroupReport
 import io.elixxir.xxclient.models.GroupSendReport
 
@@ -33,10 +33,7 @@ open class GroupChatAdapter(
     }
 
     override fun getGroups(): List<Group> {
-        return decode(
-            group.groups,
-            GroupList::class.java
-        ).groupsList
+        return decodeArray(group.groups)
     }
 
     override fun makeGroup(
@@ -45,8 +42,7 @@ open class GroupChatAdapter(
         name: ByteArray
     ): GroupReport {
         return decode(
-            group.makeGroup(membership, message, name),
-            GroupReport::class.java
+            group.makeGroup(membership, message, name)
         )
     }
 
@@ -60,15 +56,13 @@ open class GroupChatAdapter(
 
     override fun resendRequest(groupId: ByteArray): GroupReport {
         return decode(
-            group.resendRequest(groupId),
-            GroupReport::class.java
+            group.resendRequest(groupId)
         )
     }
 
     override fun send(groupId: ByteArray, message: ByteArray, tag: String?): GroupSendReport {
         return decode(
-            group.send(groupId, message, tag),
-            GroupSendReport::class.java
+            group.send(groupId, message, tag)
         )
     }
 }

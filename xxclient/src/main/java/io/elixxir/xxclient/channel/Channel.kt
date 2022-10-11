@@ -27,22 +27,19 @@ open class ChannelAdapter(protected val channel: BindingsChannel) : Channel {
 
     override fun broadcast(payload: Payload): BroadcastReport {
         return decode(
-            channel.broadcast(payload),
-            BroadcastReport::class.java
+            channel.broadcast(payload)
         )
     }
 
     override fun broadcastAsymmetric(payload: Payload, privateKey: ByteArray): BroadcastReport {
         return decode(
-            channel.broadcastAsymmetric(payload, privateKey),
-            BroadcastReport::class.java
+            channel.broadcastAsymmetric(payload, privateKey)
         )
     }
 
     override fun get(): ChannelDef {
         return decode(
-            channel.get(),
-            ChannelDef::class.java
+            channel.get()
         )
     }
 

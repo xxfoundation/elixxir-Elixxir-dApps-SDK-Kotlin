@@ -15,7 +15,7 @@ inline fun <reified T> parse(data: ByteArray?, error: Exception?, model: Class<T
         Result.failure(it)
     } ?: data?.let {
         Result.success(
-            BindingsModel.decode(it, model)
+            BindingsModel.decode(it)
         )
     } ?: Result.failure(InvalidDataException())
 }
@@ -33,6 +33,11 @@ inline fun <reified T> parseArray(arrayData: ByteArray?, error: Exception?, elem
 fun Contact.encoded(): ByteArray {
     return encode(ContactAdapter(data))
 }
+
+inline fun <reified T> List<T>.encoded(): ByteArray {
+    return BindingsModel.encodeArray(this)
+}
+
 
 inline fun <reified T> nonNullResultOf(block: () -> T?): Result<T> {
     return try {

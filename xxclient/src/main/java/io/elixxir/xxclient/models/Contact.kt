@@ -27,7 +27,7 @@ data class ContactAdapter(
     }
 
     override fun getFactsFromContact(contactData: ContactData): Fact {
-        return decode(Bindings.getFactsFromContact(contactData), Fact::class.java)
+        return decode(Bindings.getFactsFromContact(contactData))
     }
 
     override fun setFactsOnContact(contactData: ContactData, fact: Fact): ContactData {

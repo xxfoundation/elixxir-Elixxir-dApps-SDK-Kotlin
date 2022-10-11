@@ -148,7 +148,7 @@ interface Bindings {
         e2eId: E2eId,
         udContact: Contact,
         listener: UdMultiLookupResultListener,
-        lookupIds: BindingsList<UserId>,
+        lookupIds: List<UserId>,
         singleRequestParamsJson: ByteArray
     )
 
