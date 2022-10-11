@@ -22,13 +22,10 @@ open class UdMultiLookupCallbackAdapter(
         failedIds: ByteArray?, /* list of ids */
         error: Exception?
     ) {
-        Log.d("array of ContactData", contacts?.decodeToString() ?: "")
-        Log.d("failed ids string array", failedIds?.decodeToString() ?: "")
-
         val contactsResult = parseArray(
             contacts,
             error,
-            ContactAdapter::class.java
+            ByteArray::class.java
         )
         val failedLookupsResult = parseArray(
             failedIds,
@@ -39,7 +36,9 @@ open class UdMultiLookupCallbackAdapter(
         listener.onResponse(
             nonNullResultOf {
                 UdMultiLookupResult(
-                    contactsResult.getOrThrow(),
+                    contactsResult.getOrThrow().map {
+                        ContactAdapter(it)
+                    },
                     failedLookupsResult.getOrThrow(),
                 )
             }
