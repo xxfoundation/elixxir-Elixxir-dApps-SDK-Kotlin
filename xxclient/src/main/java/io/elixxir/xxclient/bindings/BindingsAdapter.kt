@@ -150,23 +150,17 @@ open class BindingsAdapter : Bindings {
     override fun newUdFromBackup(
         e2eId: E2eId,
         networkFollowerStatus: NetworkFollowerStatus,
-        emailFact: Fact,
-        phoneFact: Fact,
-        udCert: CertificateData,
-        contact: Contact,
-        udAddress: ByteArray,
-        stringArg: String
+        certificateData: CertificateData,
+        contactData: ContactData,
+        udAddress: String
     ): UserDiscovery {
         return UserDiscoveryAdapter(
             CoreBindings.newUdManagerFromBackup(
                 e2eId,
                 { networkFollowerStatus.code },
-                encode(emailFact),
-                encode(phoneFact),
-                udCert,
-                contact.encoded(),
-                udAddress,
-                stringArg
+                certificateData,
+                contactData,
+                udAddress
             )
         )
     }

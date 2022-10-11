@@ -76,12 +76,9 @@ interface Bindings {
     fun newUdFromBackup(
         e2eId: E2eId,
         networkFollowerStatus: NetworkFollowerStatus,
-        emailFact: Fact,
-        phoneFact: Fact,
-        udCert: CertificateData,
-        contact: Contact,
-        udAddress: ByteArray,
-        stringArg: String
+        certificateData: CertificateData,
+        contactData: ContactData,
+        udAddress: String,
     ): UserDiscovery
 
     fun newDummyTrafficManager(
