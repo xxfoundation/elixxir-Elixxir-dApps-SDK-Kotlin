@@ -64,13 +64,13 @@ open class BindingsAdapter : Bindings {
     override fun newCmix(
         ndfJson: String,
         sessionFileDirectory: String,
-        cmixParams: CmixParams,
+        password: CmixParams,
         registrationCode: String
     ) {
         CoreBindings.newCmix(
             ndfJson,
             sessionFileDirectory,
-            cmixParams,
+            password,
             registrationCode
         )
     }

@@ -37,7 +37,7 @@ interface Bindings {
     fun newCmix(
         ndfJson: String,
         sessionFileDirectory: String,
-        cmixParams: CmixParams,
+        password: Password,
         registrationCode: String
     )
 
