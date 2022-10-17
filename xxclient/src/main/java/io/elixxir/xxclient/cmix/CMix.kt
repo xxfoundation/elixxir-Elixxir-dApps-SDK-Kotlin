@@ -7,10 +7,11 @@ import io.elixxir.xxclient.models.BindingsModel.Companion.decode
 import io.elixxir.xxclient.models.NetworkFollowerStatus
 import io.elixxir.xxclient.models.NodeRegistrationReport
 import io.elixxir.xxclient.models.ReceptionIdentity
+import io.elixxir.xxclient.utils.E2eId
 import bindings.Cmix as CMixBindings
 
 interface CMix {
-    val id: Long
+    val id: E2eId
     val receptionRegistrationValidationSignature: ByteArray
 
     fun makeReceptionIdentity(): ReceptionIdentity
@@ -38,7 +39,7 @@ interface CMix {
 }
 
 open class CMixAdapter(protected val cMix: CMixBindings) : CMix {
-    override val id: Long
+    override val id: E2eId
         get() = cMix.id
 
     override val receptionRegistrationValidationSignature: ByteArray

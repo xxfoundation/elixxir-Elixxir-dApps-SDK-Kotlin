@@ -7,7 +7,7 @@ import io.elixxir.xxclient.models.*
 import io.elixxir.xxclient.utils.*
 
 interface E2e {
-    val id: Long
+    val id: E2eId
     val payloadSize: Long
     val receptionIdentity: ReceptionId
     val contact: Contact
