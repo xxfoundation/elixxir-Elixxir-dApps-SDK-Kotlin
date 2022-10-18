@@ -8,9 +8,9 @@ import io.elixxir.xxclient.utils.ContactData
 
 interface Contact {
     val data: ContactData
-    fun getIdFromContact(contactData: ContactData): ByteArray
-    fun getPublicKeyFromContact(contactData: ContactData): ByteArray
-    fun getFactsFromContact(contactData: ContactData): List<Fact>
+    fun getIdFromContact(): ByteArray
+    fun getPublicKeyFromContact(): ByteArray
+    fun getFactsFromContact(): List<Fact>
     fun setFactsOnContact(facts: List<Fact>): ContactData
 }
 
@@ -18,16 +18,16 @@ data class ContactAdapter(
     override val data: ContactData,
 ) : BindingsModel, Contact {
 
-    override fun getIdFromContact(contactData: ContactData): ByteArray {
-        return Bindings.getIDFromContact(contactData)
+    override fun getIdFromContact(): ByteArray {
+        return Bindings.getIDFromContact(data)
     }
 
-    override fun getPublicKeyFromContact(contactData: ContactData): ByteArray {
-        return Bindings.getPubkeyFromContact(contactData)
+    override fun getPublicKeyFromContact(): ByteArray {
+        return Bindings.getPubkeyFromContact(data)
     }
 
-    override fun getFactsFromContact(contactData: ContactData): List<Fact> {
-        return decodeArray(Bindings.getFactsFromContact(contactData))
+    override fun getFactsFromContact(): List<Fact> {
+        return decodeArray(Bindings.getFactsFromContact(data))
     }
 
     override fun setFactsOnContact(facts: List<Fact>): ContactData {
