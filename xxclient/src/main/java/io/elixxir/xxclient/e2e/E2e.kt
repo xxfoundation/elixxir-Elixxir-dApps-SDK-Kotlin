@@ -42,7 +42,7 @@ interface E2e {
     fun verifyOwnership(
         receivedContact: Contact,
         verifiedContact: Contact,
-        e2eHandler: E2eId
+        e2eId: E2eId
     ): Boolean
 
     fun confirmReceivedRequest(contact: Contact): RoundId

@@ -3,7 +3,6 @@ package io.elixxir.xxclient.e2e
 import io.elixxir.xxclient.callbacks.*
 import io.elixxir.xxclient.models.*
 import io.elixxir.xxclient.models.BindingsModel.Companion.decode
-import io.elixxir.xxclient.models.BindingsModel.Companion.encode
 import io.elixxir.xxclient.models.BindingsModel.Companion.encodeArray
 import io.elixxir.xxclient.utils.*
 import bindings.E2e as E2eBindings
@@ -100,12 +99,12 @@ open class E2eAdapter(protected val e2e: E2eBindings) : E2e{
     override fun verifyOwnership(
         receivedContact: Contact,
         verifiedContact: Contact,
-        e2eHandler: E2eId
+        e2eId: E2eId
     ): Boolean {
         return e2e.verifyOwnership(
             receivedContact.encoded(),
             verifiedContact.encoded(),
-            e2eHandler
+            e2eId
         )
     }
 
