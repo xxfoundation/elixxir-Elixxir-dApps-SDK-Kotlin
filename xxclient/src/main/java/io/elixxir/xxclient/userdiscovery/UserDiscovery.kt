@@ -1,5 +1,6 @@
 package io.elixxir.xxclient.userdiscovery
 
+import io.elixxir.xxclient.models.BindingsModel.Companion.decodeArray
 import io.elixxir.xxclient.models.BindingsModel.Companion.encode
 import io.elixxir.xxclient.models.Contact
 import io.elixxir.xxclient.models.ContactAdapter
@@ -11,7 +12,7 @@ import bindings.UserDiscovery as UdBindings
 interface UserDiscovery {
     val id: Long
     val contact: Contact
-    val facts: ByteArray
+    val facts: List<Fact>
 
     fun sendRegisterFact(fact: Fact): ConfirmationId
     fun confirmFact(confirmationId: ConfirmationId, code: VerificationCode)
@@ -24,8 +25,8 @@ open class UserDiscoveryAdapter(protected val ud: UdBindings) : UserDiscovery {
         get() = ud.id
     override val contact: Contact
         get() = ContactAdapter(ud.contact)
-    override val facts: ByteArray
-        get() = ud.facts
+    override val facts: List<Fact>
+        get() = decodeArray(ud.facts)
 
     override fun sendRegisterFact(fact: Fact): ConfirmationId {
         return ud.sendRegisterFact(encode(fact))
