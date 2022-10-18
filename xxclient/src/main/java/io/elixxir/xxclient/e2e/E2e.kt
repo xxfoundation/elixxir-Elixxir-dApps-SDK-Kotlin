@@ -27,7 +27,7 @@ interface E2e {
 
     fun requestAuthenticatedChannel(
         contact: Contact,
-        myFactsList: FactsList
+        myFactsList: List<Fact>
     ): RoundId
 
     fun resetAuthenticatedChannel(contact: Contact): RoundId

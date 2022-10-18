@@ -4,6 +4,7 @@ import io.elixxir.xxclient.callbacks.*
 import io.elixxir.xxclient.models.*
 import io.elixxir.xxclient.models.BindingsModel.Companion.decode
 import io.elixxir.xxclient.models.BindingsModel.Companion.encode
+import io.elixxir.xxclient.models.BindingsModel.Companion.encodeArray
 import io.elixxir.xxclient.utils.*
 import bindings.E2e as E2eBindings
 
@@ -59,10 +60,10 @@ open class E2eAdapter(protected val e2e: E2eBindings) : E2e{
         return e2e.hasAuthenticatedChannel(partnerId)
     }
 
-    override fun requestAuthenticatedChannel(contact: Contact, myFactsList: FactsList): RoundId {
+    override fun requestAuthenticatedChannel(contact: Contact, myFactsList: List<Fact>): RoundId {
         return e2e.request(
             contact.encoded(),
-            encode(myFactsList)
+            encodeArray(myFactsList)
         )
     }
 
