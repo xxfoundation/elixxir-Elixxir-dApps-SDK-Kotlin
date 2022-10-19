@@ -11,7 +11,7 @@ interface Contact {
     fun getIdFromContact(): ByteArray
     fun getPublicKeyFromContact(): ByteArray
     fun getFactsFromContact(): List<Fact>
-    fun setFactsOnContact(facts: List<Fact>): ContactData
+    fun setFactsOnContact(facts: List<Fact>): Contact
 }
 
 data class ContactAdapter(
@@ -30,7 +30,7 @@ data class ContactAdapter(
         return decodeArray(Bindings.getFactsFromContact(data))
     }
 
-    override fun setFactsOnContact(facts: List<Fact>): ContactData {
-        return Bindings.setFactsOnContact(data, encodeArray(facts))
+    override fun setFactsOnContact(facts: List<Fact>): Contact {
+        return ContactAdapter(Bindings.setFactsOnContact(data, encodeArray(facts)))
     }
 }
