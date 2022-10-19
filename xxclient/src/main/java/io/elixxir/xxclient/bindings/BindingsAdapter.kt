@@ -96,14 +96,14 @@ open class BindingsAdapter : Bindings {
     override fun login(
         e2eId: E2eId,
         authCallbacks: AuthEventListener,
-        receptionIdentity: ReceptionIdentity,
+        receptionIdentity: ByteArray,
         e2eParams: E2eParams
     ): E2e {
         return E2eAdapter(
             CoreBindings.login(
                 e2eId,
                 AuthCallbacksAdapter(authCallbacks),
-                encode(receptionIdentity),
+                receptionIdentity,
                 e2eParams
             )
         )
@@ -112,14 +112,14 @@ open class BindingsAdapter : Bindings {
     override fun loginEphemeral(
         e2eId: E2eId,
         authCallbacks: AuthEventListener,
-        receptionIdentity: ReceptionIdentity,
+        receptionIdentity: ByteArray,
         e2eParams: E2eParams
     ): E2e {
         return E2eAdapter(
             CoreBindings.loginEphemeral(
                 e2eId,
                 AuthCallbacksAdapter(authCallbacks),
-                encode(receptionIdentity),
+                receptionIdentity,
                 e2eParams
             )
         )

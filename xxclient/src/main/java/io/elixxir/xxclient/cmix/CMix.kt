@@ -1,9 +1,11 @@
 package io.elixxir.xxclient.cmix
 
+import android.util.Log
 import io.elixxir.xxclient.callbacks.*
 import io.elixxir.xxclient.connection.Connection
 import io.elixxir.xxclient.connection.ConnectionAdapter
 import io.elixxir.xxclient.models.BindingsModel.Companion.decode
+import io.elixxir.xxclient.models.BindingsModel.Companion.decodeArray
 import io.elixxir.xxclient.models.NetworkFollowerStatus
 import io.elixxir.xxclient.models.NodeRegistrationReport
 import io.elixxir.xxclient.models.ReceptionIdentity
@@ -14,7 +16,7 @@ interface CMix {
     val id: E2eId
     val receptionRegistrationValidationSignature: ByteArray
 
-    fun makeReceptionIdentity(): ReceptionIdentity
+    fun makeReceptionIdentity(): ByteArray
     fun makeLegacyReceptionIdentity(): ReceptionIdentity
     fun isNetworkHealthy(): Boolean
     fun getNodeRegistrationStatus(): NodeRegistrationReport
@@ -45,10 +47,8 @@ open class CMixAdapter(protected val cMix: CMixBindings) : CMix {
     override val receptionRegistrationValidationSignature: ByteArray
         get() = cMix.receptionRegistrationValidationSignature
 
-    override fun makeReceptionIdentity(): ReceptionIdentity {
-        return decode(
-            cMix.makeReceptionIdentity()
-        )
+    override fun makeReceptionIdentity(): ByteArray {
+        return cMix.makeReceptionIdentity()
     }
 
     override fun makeLegacyReceptionIdentity(): ReceptionIdentity {

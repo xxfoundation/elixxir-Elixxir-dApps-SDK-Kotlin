@@ -31,7 +31,7 @@ inline fun <reified T> parseArray(arrayData: ByteArray?, error: Exception?, elem
 }
 
 fun Contact.encoded(): ByteArray {
-    return encode(ContactAdapter(data))
+    return data
 }
 
 inline fun <reified T> List<T>.encoded(): ByteArray {

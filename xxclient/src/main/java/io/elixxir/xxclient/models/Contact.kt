@@ -16,7 +16,7 @@ interface Contact {
 
 data class ContactAdapter(
     override val data: ContactData,
-) : BindingsModel, Contact {
+) : Contact {
 
     override fun getIdFromContact(): ByteArray {
         return Bindings.getIDFromContact(data)

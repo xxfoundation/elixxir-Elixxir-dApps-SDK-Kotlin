@@ -52,14 +52,14 @@ interface Bindings {
     fun login(
         e2eId: E2eId,
         authCallbacks: AuthEventListener,
-        receptionIdentity: ReceptionIdentity,
+        receptionIdentity: ByteArray,
         e2eParams: E2eParams
     ): E2e
 
     fun loginEphemeral(
         e2eId: E2eId,
         authCallbacks: AuthEventListener,
-        receptionIdentity: ReceptionIdentity,
+        receptionIdentity: ByteArray,
         e2eParams: E2eParams
     ): E2e
 

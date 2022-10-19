@@ -1,9 +1,9 @@
 package io.elixxir.xxclient.models
 
 class ReceptionIdentity(
-    val id: ByteArray,
-    val rsaPrivatePem: ByteArray,
-    val salt: ByteArray,
-    val dhKeyPrivate: ByteArray,
-    val e2eGrp: ByteArray
+    val id: String,
+    val rsaPrivatePem: String,
+    val salt: String,
+    val dhKeyPrivate: String,
+    val e2eGrp: String
 ): BindingsModel
