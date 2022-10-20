@@ -5,5 +5,7 @@ import io.elixxir.xxclient.utils.RoundId
 data class SendReport(
     val roundIdList: List<RoundId>?,
     val messageId: ByteArray?,
-    val timestamp: Long?
+    val timestamp: Long?,
+    val roundUrl: String?,
+    val keyResidue: ByteArray?
 ) : BindingsModel
