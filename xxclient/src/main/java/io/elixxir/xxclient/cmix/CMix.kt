@@ -1,11 +1,9 @@
 package io.elixxir.xxclient.cmix
 
-import android.util.Log
 import io.elixxir.xxclient.callbacks.*
 import io.elixxir.xxclient.connection.Connection
 import io.elixxir.xxclient.connection.ConnectionAdapter
 import io.elixxir.xxclient.models.BindingsModel.Companion.decode
-import io.elixxir.xxclient.models.BindingsModel.Companion.decodeArray
 import io.elixxir.xxclient.models.NetworkFollowerStatus
 import io.elixxir.xxclient.models.NodeRegistrationReport
 import io.elixxir.xxclient.models.ReceptionIdentity
