@@ -1,7 +1,7 @@
 package io.elixxir.xxclient.models
 
 import bindings.ReceiveFileCallback
-import io.elixxir.xxclient.utils.parse
+import io.elixxir.xxclient.utils.parseModel
 import java.lang.Exception
 
 interface IncomingFileListener {
@@ -10,6 +10,9 @@ interface IncomingFileListener {
 
 open class ReceiveFileCallbackAdapter(val listener: IncomingFileListener) : ReceiveFileCallback {
     override fun callback(fileData: ByteArray?, error: Exception?) {
-        parse(fileData, error, ReceivedFile::class.java)
+        val fileResult: Result<ReceivedFile> = parseModel(fileData, error)
+        fileResult.getOrNull()?.let {
+            listener.onFileReceived(it)
+        }
     }
 }

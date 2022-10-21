@@ -1,12 +1,10 @@
 package io.elixxir.xxclient.callbacks
 
-import android.util.Log
 import bindings.UdMultiLookupCallback
 import io.elixxir.xxclient.models.ContactAdapter
 import io.elixxir.xxclient.models.UdMultiLookupResult
-import io.elixxir.xxclient.utils.UserId
 import io.elixxir.xxclient.utils.nonNullResultOf
-import io.elixxir.xxclient.utils.parseArray
+import io.elixxir.xxclient.utils.parseDataArray
 import java.lang.Exception
 
 interface UdMultiLookupResultListener {
@@ -22,15 +20,13 @@ open class UdMultiLookupCallbackAdapter(
         failedIds: ByteArray?, /* list of ids */
         error: Exception?
     ) {
-        val contactsResult = parseArray(
+        val contactsResult = parseDataArray(
             contacts,
-            error,
-            ByteArray::class.java
+            error
         )
-        val failedLookupsResult = parseArray(
+        val failedLookupsResult = parseDataArray(
             failedIds,
-            error,
-            UserId::class.java
+            error
         )
 
         listener.onResponse(

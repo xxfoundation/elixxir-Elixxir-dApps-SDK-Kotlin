@@ -1,32 +1,39 @@
 package io.elixxir.xxclient.utils
 
-import io.elixxir.xxclient.models.BindingsModel
-import io.elixxir.xxclient.models.BindingsModel.Companion.encode
-import io.elixxir.xxclient.models.Contact
-import io.elixxir.xxclient.models.ContactAdapter
-import io.elixxir.xxclient.models.InvalidDataException
+import android.util.Base64.*
+import io.elixxir.xxclient.models.*
 
 /**
- * Returns a [Result] from a Bindings callback using the [data], [error],
- * and desired [model] class.
+ * Returns a [Result] from a Bindings callback using the [data] and [error]
  */
-inline fun <reified T> parse(data: ByteArray?, error: Exception?, model: Class<T>): Result<T> {
+inline fun <reified T: BindingsModel> parseModel(data: ByteArray?, error: Exception?): Result<T> {
     return error?.let {
         Result.failure(it)
     } ?: data?.let {
-        Result.success(
-            BindingsModel.decode(it)
-        )
+        if (it.isNotEmpty()) Result.success(BindingsModel.decode(it))
+        else Result.failure(NoResultsException())
     } ?: Result.failure(InvalidDataException())
 }
 
-inline fun <reified T> parseArray(arrayData: ByteArray?, error: Exception?, elementModel: Class<T>): Result<List<T>> {
+fun parseData(rawData: ByteArray?, error: Exception?): Result<ByteArray> {
+    return parseDataArray(rawData, error).run {
+        getOrNull()?.let {
+            Result.success(it.firstOrNull() ?: byteArrayOf())
+        } ?: Result.failure(exceptionOrNull() ?: InvalidDataException())
+    }
+}
+
+fun parseDataArray(dataArray: ByteArray?, error: Exception?): Result<List<ByteArray>> {
     return error?.let {
         Result.failure(it)
-    } ?: arrayData?.let {
-        Result.success(
-            BindingsModel.decodeArray(it)
-        )
+    } ?: dataArray?.let {
+        if (it.isNotEmpty()) {
+            Result.success(
+                BindingsModel.decodeArray<String>(it).map { base64Data ->
+                    base64Data.fromBase64toByteArray()
+                }
+            )
+        } else Result.success(listOf())
     } ?: Result.failure(InvalidDataException())
 }
 
@@ -38,7 +45,6 @@ inline fun <reified T> List<T>.encoded(): ByteArray {
     return BindingsModel.encodeArray(this)
 }
 
-
 inline fun <reified T> nonNullResultOf(block: () -> T?): Result<T> {
     return try {
         block()?.let {
@@ -47,4 +53,12 @@ inline fun <reified T> nonNullResultOf(block: () -> T?): Result<T> {
     } catch (e: Exception) {
         Result.failure(e)
     }
+}
+
+fun ByteArray.toBase64String(): String {
+    return encodeToString(this, NO_WRAP)
+}
+
+fun String.fromBase64toByteArray(): ByteArray {
+    return decode(this, NO_WRAP)
 }

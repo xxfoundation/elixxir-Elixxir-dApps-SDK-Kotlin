@@ -1,11 +1,7 @@
 package io.elixxir.xxclient.callbacks
 
 import bindings.UdLookupCallback
-import io.elixxir.xxclient.models.ContactAdapter
-import io.elixxir.xxclient.utils.ContactData
-import io.elixxir.xxclient.utils.nonNullResultOf
-import io.elixxir.xxclient.utils.parse
-import io.elixxir.xxclient.utils.parseArray
+import io.elixxir.xxclient.utils.*
 import java.lang.Exception
 
 interface UdLookupResultListener {
@@ -16,10 +12,9 @@ open class UdLookupCallbackAdapter(
     protected val listener: UdLookupResultListener
 ) : UdLookupCallback {
     override fun callback(contacts: ByteArray?, error: Exception?) {
-        val contactsResult = parseArray(
+        val contactsResult = parseDataArray(
             contacts,
-            error,
-            ByteArray::class.java
+            error
         )
 
         listener.onResponse(

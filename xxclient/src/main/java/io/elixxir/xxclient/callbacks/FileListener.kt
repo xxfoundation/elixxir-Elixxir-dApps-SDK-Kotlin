@@ -2,7 +2,7 @@ package io.elixxir.xxclient.callbacks
 
 import bindings.ReceiveFileCallback
 import io.elixxir.xxclient.utils.Payload
-import io.elixxir.xxclient.utils.parse
+import io.elixxir.xxclient.utils.parseModel
 import java.lang.Exception
 
 
@@ -16,7 +16,7 @@ open class ReceiveFileCallbackAdapter(
 
     override fun callback(payload: ByteArray?, error: Exception?) {
         listener.onFileReceived(
-            parse(payload, error, Payload::class.java)
+            parseModel(payload, error)
         )
     }
 }

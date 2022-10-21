@@ -2,7 +2,7 @@ package io.elixxir.xxclient.callbacks
 
 import bindings.UdSearchCallback
 import io.elixxir.xxclient.utils.ContactData
-import io.elixxir.xxclient.utils.parse
+import io.elixxir.xxclient.utils.parseData
 import java.lang.Exception
 
 interface UdSearchResultListener {
@@ -14,7 +14,7 @@ open class UdSearchCallbackAdapter(
 ) : UdSearchCallback {
     override fun callback(contactData: ByteArray?, error: Exception?) {
         listener.onResponse(
-            parse(contactData, error, ContactData::class.java)
+            parseData(contactData, error)
         )
     }
 }

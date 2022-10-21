@@ -2,7 +2,7 @@ package io.elixxir.xxclient.callbacks
 
 import bindings.SingleUseCallback
 import io.elixxir.xxclient.models.SingleUseReport
-import io.elixxir.xxclient.utils.parse
+import io.elixxir.xxclient.utils.parseModel
 import java.lang.Exception
 
 interface SingleUseListener {
@@ -14,7 +14,7 @@ open class SingleUseAdapter(
 ) : SingleUseCallback {
     override fun callback(report: ByteArray?, error: Exception?) {
         listener.handle(
-            parse(report, error, SingleUseReport::class.java)
+            parseModel(report, error)
         )
     }
 }

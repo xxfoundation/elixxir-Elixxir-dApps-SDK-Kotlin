@@ -3,7 +3,7 @@ package io.elixxir.xxclient.callbacks
 import java.lang.Exception
 import bindings.BroadcastListener as BroadcastListenerBindings
 import io.elixxir.xxclient.models.BroadcastMessage
-import io.elixxir.xxclient.utils.parse
+import io.elixxir.xxclient.utils.parseModel
 
 interface BroadcastListener {
     fun onBroadcast(result: Result<BroadcastMessage>)
@@ -15,7 +15,7 @@ open class BroadcastListenerAdapter(
 
     override fun callback(data: ByteArray?, error: Exception?) {
         listener.onBroadcast(
-            parse(data, error, BroadcastMessage::class.java)
+            parseModel(data, error)
         )
     }
 }
