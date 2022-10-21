@@ -3,6 +3,7 @@ package io.elixxir.xxclient.e2e
 import io.elixxir.xxclient.callbacks.*
 import io.elixxir.xxclient.models.*
 import io.elixxir.xxclient.models.BindingsModel.Companion.decode
+import io.elixxir.xxclient.models.BindingsModel.Companion.decodeArray
 import io.elixxir.xxclient.models.BindingsModel.Companion.encodeArray
 import io.elixxir.xxclient.utils.*
 import bindings.E2e as E2eBindings
@@ -21,8 +22,8 @@ open class E2eAdapter(protected val e2e: E2eBindings) : E2e{
         return e2e.partitionSize(bytes)
     }
 
-    override fun getAllPartnerIds(): PartnersList {
-        return decode(e2e.allPartnerIDs)
+    override fun getAllPartnerIds(): List<UserId> {
+        return decodeArray(e2e.allPartnerIDs)
     }
 
     override fun getUdAddressFromNdf(): String {

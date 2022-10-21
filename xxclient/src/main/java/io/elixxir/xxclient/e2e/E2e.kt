@@ -14,7 +14,7 @@ interface E2e {
 
     fun setPartitionSize(bytes: Long): Long
 
-    fun getAllPartnerIds(): PartnersList
+    fun getAllPartnerIds(): List<UserId>
     fun getUdAddressFromNdf(): String
     fun getUdCertFromNdf(): ByteArray
     fun getUdContactFromNdf(): Contact
