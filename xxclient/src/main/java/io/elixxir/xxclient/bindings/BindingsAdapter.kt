@@ -353,4 +353,12 @@ open class BindingsAdapter : Bindings {
     override fun isRegisteredWithUd(e2eId: E2eId): Boolean {
         return CoreBindings.isRegisteredWithUD(e2eId)
     }
+
+    override fun registerForNotifications(e2eId: E2eId, token: String) {
+        CoreBindings.registerForNotifications(e2eId, token)
+    }
+
+    override fun unregisterForNotifications(e2eId: E2eId) {
+        CoreBindings.unregisterForNotifications(e2eId)
+    }
 }

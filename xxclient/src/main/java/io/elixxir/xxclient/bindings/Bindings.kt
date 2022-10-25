@@ -169,4 +169,8 @@ interface Bindings {
     fun updateCommonErrors(errorsJson: String)
 
     fun isRegisteredWithUd(e2eId: E2eId): Boolean
+
+    fun registerForNotifications(e2eId: E2eId, token: String)
+
+    fun unregisterForNotifications(e2eId: E2eId)
 }
