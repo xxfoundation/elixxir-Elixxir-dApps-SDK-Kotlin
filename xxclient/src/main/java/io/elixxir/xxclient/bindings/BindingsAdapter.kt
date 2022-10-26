@@ -215,10 +215,6 @@ open class BindingsAdapter : Bindings {
         )
     }
 
-    override fun fetchSignedNdf(url: String, cert: String): Ndf {
-        return CoreBindings.downloadAndVerifySignedNdfWithUrl(url, cert)
-    }
-
     override fun getReceptionIdentity(key: String, e2eId: E2eId): ReceptionIdentity {
         return decode(
             CoreBindings.loadReceptionIdentity(key, e2eId)

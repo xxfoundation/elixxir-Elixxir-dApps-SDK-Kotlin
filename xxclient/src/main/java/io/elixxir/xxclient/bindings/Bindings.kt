@@ -103,11 +103,6 @@ interface Bindings {
         updateListener: BackupUpdateListener
     ): Backup
 
-    fun fetchSignedNdf(
-        url: String,
-        cert: String
-    ): Ndf
-
     fun getReceptionIdentity(
         key: String,
         e2eId: E2eId
