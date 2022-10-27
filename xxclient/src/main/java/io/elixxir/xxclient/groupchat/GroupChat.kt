@@ -7,17 +7,18 @@ import io.elixxir.xxclient.models.BindingsModel.Companion.decode
 import io.elixxir.xxclient.models.BindingsModel.Companion.decodeArray
 import io.elixxir.xxclient.models.GroupReport
 import io.elixxir.xxclient.models.GroupSendReport
+import io.elixxir.xxclient.utils.GroupId
 
 interface GroupChat {
     val numGroups: Long
 
-    fun getGroup(groupId: ByteArray): Group
-    fun getGroups(): List<Group>
+    fun getGroup(groupId: GroupId): Group
+    fun getGroups(): List<GroupId>
     fun makeGroup(membership: ByteArray, message: ByteArray, name: ByteArray): GroupReport?
-    fun joinGroup(trackedGroupId: ByteArray)
-    fun leaveGroup(groupId: ByteArray)
-    fun resendRequest(groupId: ByteArray): GroupReport?
-    fun send(groupId: ByteArray, message: ByteArray, tag: String?): GroupSendReport?
+    fun joinGroup(trackedGroupId: GroupId)
+    fun leaveGroup(groupId: GroupId)
+    fun resendRequest(groupId: GroupId): GroupReport?
+    fun send(groupId: GroupId, message: ByteArray, tag: String?): GroupSendReport?
 }
 
 open class GroupChatAdapter(
@@ -32,7 +33,7 @@ open class GroupChatAdapter(
         )
     }
 
-    override fun getGroups(): List<Group> {
+    override fun getGroups(): List<GroupId> {
         return decodeArray(group.groups)
     }
 
