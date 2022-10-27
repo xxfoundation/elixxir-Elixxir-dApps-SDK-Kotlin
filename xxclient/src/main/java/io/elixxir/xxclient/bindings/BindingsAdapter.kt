@@ -373,4 +373,8 @@ open class BindingsAdapter : Bindings {
     override fun unregisterForNotifications(e2eId: E2eId) {
         CoreBindings.unregisterForNotifications(e2eId)
     }
+
+    override fun createUserFriendlyErrorMessage(error: String): String {
+        return CoreBindings.createUserFriendlyErrorMessage(error)
+    }
 }
