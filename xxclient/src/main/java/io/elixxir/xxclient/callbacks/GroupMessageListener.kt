@@ -1,16 +1,20 @@
 package io.elixxir.xxclient.callbacks
 
 import bindings.GroupChatProcessor
+import io.elixxir.xxclient.models.BindingsModel.Companion.decode
+import io.elixxir.xxclient.models.GroupChatMessage
+import io.elixxir.xxclient.utils.ReceptionId
+import io.elixxir.xxclient.utils.RoundId
 
 interface GroupMessageListener {
     val name: String
 
     fun onMessageReceived(
-        decryptedMessage: ByteArray?,
+        decryptedMessage: GroupChatMessage?,
         message: ByteArray?,
-        receptionId: ByteArray?,
+        receptionId: ReceptionId?,
         ephemeralId: Long,
-        roundId: Long,
+        roundId: RoundId,
         error: Exception?
     )
 }
@@ -27,7 +31,12 @@ open class GroupChatProcessorAdapter(
         error: Exception?
     ) {
         listener.onMessageReceived(
-            decryptedMessage, message, receptionId, ephemeralId, roundId, error
+            decode<GroupChatMessage>(decryptedMessage),
+            message,
+            receptionId,
+            ephemeralId,
+            roundId,
+            error
         )
     }
 
