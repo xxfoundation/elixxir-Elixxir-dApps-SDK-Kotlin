@@ -17,21 +17,25 @@ interface BindingsModel {
             return Gson().toJson(list.toTypedArray(), typeToken).encodeToByteArray()
         }
 
-        inline fun <reified T> decode(data: ByteArray): T? {
-            return if (data.isNotEmpty()) {
-                val typeToken = object : TypeToken<T>() {}.type
-                Gson().fromJson(data.decodeToString(), typeToken)
-            } else {
-                Log.d("Decode", "Failed to decode data: ${data.decodeToString()}")
-                null
+        inline fun <reified T> decode(data: ByteArray?): T? {
+            return data?.run {
+                if (isNotEmpty()) {
+                    val typeToken = object : TypeToken<T>() {}.type
+                    Gson().fromJson<T>(decodeToString(), typeToken)
+                } else {
+                    Log.d("Decode", "Failed to decode data: ${decodeToString()}")
+                    null
+                }
             }
         }
 
-        inline fun <reified T> decodeArray(data: ByteArray): List<T> {
-            return if (data.isNotEmpty()) {
-                val typeToken = object : TypeToken<Array<T>>() {}.type
-                Gson().fromJson<Array<T>>(data.decodeToString(), typeToken).toList()
-            } else listOf()
+        inline fun <reified T> decodeArray(data: ByteArray?): List<T> {
+            return data?.run {
+                if (isNotEmpty()) {
+                    val typeToken = object : TypeToken<Array<T>>() {}.type
+                    Gson().fromJson<Array<T>>(decodeToString(), typeToken).toList()
+                } else listOf()
+            } ?: listOf()
         }
     }
 }
