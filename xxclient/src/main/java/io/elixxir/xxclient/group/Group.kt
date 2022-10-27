@@ -9,7 +9,6 @@ interface Group {
     val initMessage: ByteArray
     val membership:ByteArray
     val name: ByteArray
-//    val trackedId: Long
     val serialize: ByteArray
 }
 
@@ -28,8 +27,6 @@ open class GroupAdapter(
         get() = group.membership
     override val name: ByteArray
         get() = group.name
-//    override val trackedId: Long
-//        get() = group.trackedID
     override val serialize: ByteArray
         get() = group.serialize()
 }
