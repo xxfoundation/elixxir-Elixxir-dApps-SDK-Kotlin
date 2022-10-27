@@ -16,6 +16,8 @@ import io.elixxir.xxclient.e2e.E2e
 import io.elixxir.xxclient.e2e.E2eAdapter
 import io.elixxir.xxclient.filetransfer.FileTransfer
 import io.elixxir.xxclient.filetransfer.FileTransferAdapter
+import io.elixxir.xxclient.group.Group
+import io.elixxir.xxclient.group.GroupAdapter
 import io.elixxir.xxclient.groupchat.GroupChat
 import io.elixxir.xxclient.groupchat.GroupChatAdapter
 import io.elixxir.xxclient.models.*
@@ -376,5 +378,9 @@ open class BindingsAdapter : Bindings {
 
     override fun createUserFriendlyErrorMessage(error: String): String {
         return CoreBindings.createUserFriendlyErrorMessage(error)
+    }
+
+    override fun deserializeGroup(groupData: ByteArray): Group {
+        return GroupAdapter(CoreBindings.deserializeGroup(groupData))
     }
 }

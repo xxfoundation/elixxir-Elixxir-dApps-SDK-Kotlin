@@ -8,6 +8,7 @@ import io.elixxir.xxclient.cmix.CMix
 import io.elixxir.xxclient.dummytraffic.DummyTraffic
 import io.elixxir.xxclient.e2e.E2e
 import io.elixxir.xxclient.filetransfer.FileTransfer
+import io.elixxir.xxclient.group.Group
 import io.elixxir.xxclient.groupchat.GroupChat
 import io.elixxir.xxclient.models.*
 import io.elixxir.xxclient.userdiscovery.UserDiscovery
@@ -177,4 +178,6 @@ interface Bindings {
     fun unregisterForNotifications(e2eId: E2eId)
 
     fun createUserFriendlyErrorMessage(error: String): String
+
+    fun deserializeGroup(groupData: ByteArray): Group
 }
