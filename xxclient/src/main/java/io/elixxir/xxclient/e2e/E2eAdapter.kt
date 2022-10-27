@@ -75,7 +75,7 @@ open class E2eAdapter(protected val e2e: E2eBindings) : E2e{
         e2e.callAllReceivedRequests()
     }
 
-    override fun getReceivedRequest(partnerId: UserId): Request {
+    override fun getReceivedRequest(partnerId: UserId): Request? {
         return decode(
             e2e.getReceivedRequest(partnerId)
         )
@@ -122,7 +122,7 @@ open class E2eAdapter(protected val e2e: E2eBindings) : E2e{
         receiverId: UserId,
         payload: Payload,
         params: E2eParams
-    ): SendReport {
+    ): SendReport? {
         val reportData = e2e.sendE2E(
             messageType.code,
             receiverId,

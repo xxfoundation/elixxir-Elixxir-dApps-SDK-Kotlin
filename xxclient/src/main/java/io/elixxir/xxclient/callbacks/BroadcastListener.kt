@@ -14,8 +14,8 @@ open class BroadcastListenerAdapter(
 ) : BroadcastListener by listener, BroadcastListenerBindings {
 
     override fun callback(data: ByteArray?, error: Exception?) {
-        listener.onBroadcast(
-            parseModel(data, error)
-        )
+        parseModel<BroadcastMessage>(data, error).let {
+            listener.onBroadcast(it)
+        }
     }
 }

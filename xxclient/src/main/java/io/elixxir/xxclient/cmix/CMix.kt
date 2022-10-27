@@ -15,9 +15,9 @@ interface CMix {
     val receptionRegistrationValidationSignature: ByteArray
 
     fun makeReceptionIdentity(): ByteArray
-    fun makeLegacyReceptionIdentity(): ReceptionIdentity
+    fun makeLegacyReceptionIdentity(): ReceptionIdentity?
     fun isNetworkHealthy(): Boolean
-    fun getNodeRegistrationStatus(): NodeRegistrationReport
+    fun getNodeRegistrationStatus(): NodeRegistrationReport?
     fun hasRunningProcesses(): Boolean
     fun getNetworkFollowerStatus(): NetworkFollowerStatus
     fun startNetworkFollower(timeoutMs: Long)
@@ -49,7 +49,7 @@ open class CMixAdapter(protected val cMix: CMixBindings) : CMix {
         return cMix.makeReceptionIdentity()
     }
 
-    override fun makeLegacyReceptionIdentity(): ReceptionIdentity {
+    override fun makeLegacyReceptionIdentity(): ReceptionIdentity? {
         return decode(
             cMix.makeLegacyReceptionIdentity()
         )
@@ -59,7 +59,7 @@ open class CMixAdapter(protected val cMix: CMixBindings) : CMix {
         return cMix.isHealthy
     }
 
-    override fun getNodeRegistrationStatus(): NodeRegistrationReport {
+    override fun getNodeRegistrationStatus(): NodeRegistrationReport? {
         return decode(
             cMix.nodeRegistrationStatus
         )

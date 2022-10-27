@@ -13,10 +13,10 @@ open class MessageListenerAdapter(
     protected val listener: MessageListener
 ) : Listener {
     override fun hear(message: ByteArray?) {
-        message?.let {
-            listener.onMessageReceived(
-                decode(it)
-            )
+        message?.let { data ->
+            decode<Message>(data)?.let {
+                listener.onMessageReceived(it)
+            }
         }
     }
 

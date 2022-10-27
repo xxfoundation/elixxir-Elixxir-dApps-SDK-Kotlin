@@ -26,7 +26,7 @@ interface Bindings {
     fun downloadAndVerifySignedNdf(
         environmentUrl: String,
         certificate: Certificate,
-    ): Ndf
+    ): Ndf?
 
     fun generateSecret(byteLength: Long): Password
 
@@ -34,7 +34,7 @@ interface Bindings {
         sessionFileDirectory: String,
         sessionPassword: Password,
         cmixParams: CmixParams
-    ): CMix
+    ): CMix?
 
     fun newCmix(
         ndfJson: String,
@@ -114,7 +114,7 @@ interface Bindings {
     fun getReceptionIdentity(
         key: String,
         e2eId: E2eId
-    ): ReceptionIdentity
+    ): ReceptionIdentity?
 
     fun newFileTransferManager(
         e2eId: E2eId,
@@ -125,7 +125,7 @@ interface Bindings {
 
     fun getIdFromContact(contactData: ContactData): ByteArray
     fun getPublicKeyFromContact(contactData: ContactData): ByteArray
-    fun getFactsFromContact(contactData: ContactData): Fact
+    fun getFactsFromContact(contactData: ContactData): List<Fact>
     fun setFactsOnContact(contactData: ContactData, fact: Fact): ContactData
 
     fun searchUd(
@@ -134,7 +134,7 @@ interface Bindings {
         listener: UdSearchResultListener,
         factsListJson: ByteArray,
         singleRequestParamsJson: ByteArray
-    ): SingleUseReport
+    ): SingleUseReport?
 
     fun lookupUd(
         e2eId: E2eId,
@@ -142,7 +142,7 @@ interface Bindings {
         listener: UdLookupResultListener,
         lookupId: UserId,
         singleRequestParamsJson: ByteArray
-    ): SingleUseReport
+    ): SingleUseReport?
 
     fun multiLookupUd(
         e2eId: E2eId,
@@ -167,7 +167,7 @@ interface Bindings {
         payload: Payload,
         paramsJson: ByteArray,
         listener: SingleUseResponseListener
-    ): SingleUseReport
+    ): SingleUseReport?
 
     fun updateCommonErrors(errorsJson: String)
 

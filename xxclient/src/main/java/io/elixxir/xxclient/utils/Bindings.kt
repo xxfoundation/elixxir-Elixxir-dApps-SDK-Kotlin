@@ -10,8 +10,9 @@ inline fun <reified T: BindingsModel> parseModel(data: ByteArray?, error: Except
     return error?.let {
         Result.failure(it)
     } ?: data?.let {
-        if (it.isNotEmpty()) Result.success(BindingsModel.decode(it))
-        else Result.failure(NoResultsException())
+        BindingsModel.decode<T>(it)?.let { model ->
+            Result.success(model)
+        } ?: Result.failure(NoResultsException())
     } ?: Result.failure(InvalidDataException())
 }
 

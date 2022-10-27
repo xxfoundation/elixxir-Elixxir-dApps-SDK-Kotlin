@@ -1,6 +1,5 @@
 package io.elixxir.xxclient.bindings
 
-import bindings.GroupChatProcessor
 import io.elixxir.xxclient.backup.Backup
 import io.elixxir.xxclient.backup.BackupAdapter
 import io.elixxir.xxclient.callbacks.*
@@ -22,6 +21,7 @@ import io.elixxir.xxclient.groupchat.GroupChat
 import io.elixxir.xxclient.groupchat.GroupChatAdapter
 import io.elixxir.xxclient.models.*
 import io.elixxir.xxclient.models.BindingsModel.Companion.decode
+import io.elixxir.xxclient.models.BindingsModel.Companion.decodeArray
 import io.elixxir.xxclient.models.BindingsModel.Companion.encode
 import io.elixxir.xxclient.models.ReceiveFileCallbackAdapter
 import io.elixxir.xxclient.userdiscovery.UserDiscovery
@@ -48,7 +48,7 @@ open class BindingsAdapter : Bindings {
     override fun downloadAndVerifySignedNdf(
         environmentUrl: String,
         certificate: Certificate
-    ): Ndf {
+    ): Ndf? {
         return CoreBindings.downloadAndVerifySignedNdfWithUrl(environmentUrl, certificate)
     }
 
@@ -233,7 +233,7 @@ open class BindingsAdapter : Bindings {
         )
     }
 
-    override fun getReceptionIdentity(key: String, e2eId: E2eId): ReceptionIdentity {
+    override fun getReceptionIdentity(key: String, e2eId: E2eId): ReceptionIdentity? {
         return decode(
             CoreBindings.loadReceptionIdentity(key, e2eId)
         )
@@ -263,8 +263,8 @@ open class BindingsAdapter : Bindings {
         return CoreBindings.getPubkeyFromContact(contactData)
     }
 
-    override fun getFactsFromContact(contactData: ContactData): Fact {
-        return decode(
+    override fun getFactsFromContact(contactData: ContactData): List<Fact> {
+        return decodeArray(
             CoreBindings.getFactsFromContact(contactData)
         )
     }
@@ -279,7 +279,7 @@ open class BindingsAdapter : Bindings {
         listener: UdSearchResultListener,
         factsListJson: ByteArray,
         singleRequestParamsJson: ByteArray
-    ): SingleUseReport {
+    ): SingleUseReport? {
         val result = CoreBindings.searchUD(
                 e2eId,
                 udContact.encoded(),
@@ -296,7 +296,7 @@ open class BindingsAdapter : Bindings {
         listener: UdLookupResultListener,
         lookupId: UserId,
         singleRequestParamsJson: ByteArray
-    ): SingleUseReport {
+    ): SingleUseReport? {
         val result = CoreBindings.lookupUD(
             e2eId,
             udContact.encoded(),
@@ -348,7 +348,7 @@ open class BindingsAdapter : Bindings {
         payload: Payload,
         paramsJson: ByteArray,
         listener: SingleUseResponseListener
-    ): SingleUseReport {
+    ): SingleUseReport? {
         val result = CoreBindings.transmitSingleUse(
             e2eId,
             recipient.encoded(),

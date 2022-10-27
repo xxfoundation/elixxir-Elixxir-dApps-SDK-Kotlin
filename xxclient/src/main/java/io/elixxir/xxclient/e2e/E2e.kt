@@ -33,7 +33,7 @@ interface E2e {
     fun resetAuthenticatedChannel(contact: Contact): RoundId
 
     fun callAllReceivedRequests()
-    fun getReceivedRequest(partnerId: UserId): Request
+    fun getReceivedRequest(partnerId: UserId): Request?
     fun deleteRequest(partnerId: UserId)
     fun deleteAllRequests()
     fun deleteReceivedRequests()
@@ -54,7 +54,7 @@ interface E2e {
         receiverId: UserId,
         payload: Payload,
         params: E2eParams
-    ): SendReport
+    ): SendReport?
 
     fun registerListener(
         senderId: UserId,

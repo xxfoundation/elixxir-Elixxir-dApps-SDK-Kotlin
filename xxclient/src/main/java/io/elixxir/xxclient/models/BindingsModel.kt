@@ -17,13 +17,13 @@ interface BindingsModel {
             return Gson().toJson(list.toTypedArray(), typeToken).encodeToByteArray()
         }
 
-        inline fun <reified T> decode(data: ByteArray): T {
+        inline fun <reified T> decode(data: ByteArray): T? {
             return if (data.isNotEmpty()) {
                 val typeToken = object : TypeToken<T>() {}.type
                 Gson().fromJson(data.decodeToString(), typeToken)
             } else {
                 Log.d("Decode", "Failed to decode data: ${data.decodeToString()}")
-                throw InvalidDataException()
+                null
             }
         }
 

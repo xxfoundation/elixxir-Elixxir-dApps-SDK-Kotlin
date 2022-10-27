@@ -12,9 +12,9 @@ interface Channel {
     val maxAsymmetricPayloadSize: Long
     val maxPayloadSize: Long
 
-    fun broadcast(payload: Payload): BroadcastReport
-    fun broadcastAsymmetric(payload: Payload, privateKey: ByteArray): BroadcastReport
-    fun get(): ChannelDef
+    fun broadcast(payload: Payload): BroadcastReport?
+    fun broadcastAsymmetric(payload: Payload, privateKey: ByteArray): BroadcastReport?
+    fun get(): ChannelDef?
     fun listen(channel: Long, listener: BroadcastListener)
     fun stop()
 }
@@ -25,19 +25,19 @@ open class ChannelAdapter(protected val channel: BindingsChannel) : Channel {
     override val maxPayloadSize: Long
         get() = channel.maxPayloadSize()
 
-    override fun broadcast(payload: Payload): BroadcastReport {
+    override fun broadcast(payload: Payload): BroadcastReport? {
         return decode(
             channel.broadcast(payload)
         )
     }
 
-    override fun broadcastAsymmetric(payload: Payload, privateKey: ByteArray): BroadcastReport {
+    override fun broadcastAsymmetric(payload: Payload, privateKey: ByteArray): BroadcastReport? {
         return decode(
             channel.broadcastAsymmetric(payload, privateKey)
         )
     }
 
-    override fun get(): ChannelDef {
+    override fun get(): ChannelDef? {
         return decode(
             channel.get()
         )
