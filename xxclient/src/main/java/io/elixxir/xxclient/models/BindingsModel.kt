@@ -19,7 +19,7 @@ interface BindingsModel {
 
         inline fun <reified T> decode(data: ByteArray?): T? {
             return data?.run {
-                if (isNotEmpty()) {
+                if (isNotEmpty() && decodeToString() != "null") {
                     val typeToken = object : TypeToken<T>() {}.type
                     Gson().fromJson<T>(decodeToString(), typeToken)
                 } else {
@@ -31,7 +31,7 @@ interface BindingsModel {
 
         inline fun <reified T> decodeArray(data: ByteArray?): List<T> {
             return data?.run {
-                if (isNotEmpty()) {
+                if (isNotEmpty() && decodeToString() != "null") {
                     val typeToken = object : TypeToken<Array<T>>() {}.type
                     Gson().fromJson<Array<T>>(decodeToString(), typeToken).toList()
                 } else listOf()
