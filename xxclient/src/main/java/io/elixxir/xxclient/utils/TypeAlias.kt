@@ -22,3 +22,4 @@ typealias CertificateData = ByteArray
 typealias FileTransferId = Byte
 typealias Data = ByteArray
 typealias UdId = Long
+typealias GroupId = ByteArray
