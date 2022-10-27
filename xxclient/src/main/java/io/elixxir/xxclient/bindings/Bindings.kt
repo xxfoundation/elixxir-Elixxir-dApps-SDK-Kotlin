@@ -8,6 +8,7 @@ import io.elixxir.xxclient.cmix.CMix
 import io.elixxir.xxclient.dummytraffic.DummyTraffic
 import io.elixxir.xxclient.e2e.E2e
 import io.elixxir.xxclient.filetransfer.FileTransfer
+import io.elixxir.xxclient.groupchat.GroupChat
 import io.elixxir.xxclient.models.*
 import io.elixxir.xxclient.userdiscovery.UserDiscovery
 import io.elixxir.xxclient.utils.*
@@ -87,6 +88,12 @@ interface Bindings {
         avgSendDeltaMS: Long,
         randomRangeMS: Long
     ): DummyTraffic
+
+    fun newGroupChat(
+        e2eId: E2eId,
+        requestListener: GroupRequestListener,
+        messageListener: GroupMessageListener,
+    ): GroupChat
 
     fun registerLogger(logLevel: LogLevel, logWriter: LogWriter)
 

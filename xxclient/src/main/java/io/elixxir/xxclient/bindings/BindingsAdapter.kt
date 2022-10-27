@@ -1,5 +1,6 @@
 package io.elixxir.xxclient.bindings
 
+import bindings.GroupChatProcessor
 import io.elixxir.xxclient.backup.Backup
 import io.elixxir.xxclient.backup.BackupAdapter
 import io.elixxir.xxclient.callbacks.*
@@ -15,6 +16,8 @@ import io.elixxir.xxclient.e2e.E2e
 import io.elixxir.xxclient.e2e.E2eAdapter
 import io.elixxir.xxclient.filetransfer.FileTransfer
 import io.elixxir.xxclient.filetransfer.FileTransferAdapter
+import io.elixxir.xxclient.groupchat.GroupChat
+import io.elixxir.xxclient.groupchat.GroupChatAdapter
 import io.elixxir.xxclient.models.*
 import io.elixxir.xxclient.models.BindingsModel.Companion.decode
 import io.elixxir.xxclient.models.BindingsModel.Companion.encode
@@ -178,6 +181,19 @@ open class BindingsAdapter : Bindings {
                 avgSendDeltaMS,
                 randomRangeMS)
         )
+    }
+
+    override fun newGroupChat(
+        e2eId: E2eId,
+        requestListener: GroupRequestListener,
+        messageListener: GroupMessageListener,
+    ): GroupChat {
+        val groupChat = CoreBindings.newGroupChat(
+            e2eId,
+            GroupRequestAdapter(requestListener),
+            GroupChatProcessorAdapter(messageListener)
+        )
+        return GroupChatAdapter(groupChat)
     }
 
     override fun registerLogger(logLevel: LogLevel, logWriter: LogWriter) {
