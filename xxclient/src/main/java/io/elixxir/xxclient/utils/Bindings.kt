@@ -17,11 +17,15 @@ inline fun <reified T: BindingsModel> parseModel(data: ByteArray?, error: Except
 }
 
 fun parseData(rawData: ByteArray?, error: Exception?): Result<ByteArray> {
-    return parseDataArray(rawData, error).run {
-        getOrNull()?.let {
-            Result.success(it.firstOrNull() ?: byteArrayOf())
-        } ?: Result.failure(exceptionOrNull() ?: InvalidDataException())
-    }
+    return error?.let {
+        Result.failure(it)
+    } ?: rawData?.let {
+        if (it.isNotEmpty()) {
+            Result.success(
+                it.decodeToString().fromBase64toByteArray()
+            )
+        } else Result.success(byteArrayOf())
+    } ?: Result.failure(InvalidDataException())
 }
 
 fun parseDataArray(dataArray: ByteArray?, error: Exception?): Result<List<ByteArray>> {
