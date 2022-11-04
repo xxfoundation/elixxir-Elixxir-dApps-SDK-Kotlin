@@ -13,8 +13,7 @@ open class UdLookupCallbackAdapter(
     protected val listener: UdLookupResultListener
 ) : UdLookupCallback {
     override fun callback(contacts: ByteArray?, error: Exception?) {
-        Log.d("UdLookup", "contacts: ${contacts?.decodeToString() ?: "null"}")
-        val contactsResult = parseData(
+        val contactsResult = parseContactData(
             contacts,
             error
         )
