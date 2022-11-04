@@ -42,6 +42,17 @@ fun parseDataArray(dataArray: ByteArray?, error: Exception?): Result<List<ByteAr
     } ?: Result.failure(InvalidDataException())
 }
 
+fun parseContactData(contactData: ByteArray?, error: Exception?): Result<ContactData> {
+    return error?.let {
+        Result.failure(it)
+    } ?: contactData?.let {
+        if (it.isNotEmpty()) {
+            Result.success(it)
+        } else Result.failure(InvalidDataException())
+    } ?: Result.failure(InvalidDataException())
+}
+
+
 fun Contact.encoded(): ByteArray {
     return data
 }
