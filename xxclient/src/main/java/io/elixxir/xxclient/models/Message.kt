@@ -24,4 +24,7 @@ data class Message(
     val roundId: Long,
     @SerializedName("RoundURL")
     val roundUrl: String?
-) : BindingsModel
+) : BindingsModel {
+
+    fun getTimestampMs() = timestamp / 1_000_000
+}
