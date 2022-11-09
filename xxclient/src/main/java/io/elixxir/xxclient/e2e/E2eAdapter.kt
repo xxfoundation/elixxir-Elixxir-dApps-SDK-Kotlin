@@ -133,7 +133,7 @@ open class E2eAdapter(protected val e2e: E2eBindings) : E2e{
     }
 
     override fun registerListener(
-        senderId: UserId,
+        senderId: UserId?,
         messageType: MessageType,
         e2eListener: MessageListener
     ) {

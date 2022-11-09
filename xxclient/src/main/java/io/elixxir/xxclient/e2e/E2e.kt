@@ -57,7 +57,7 @@ interface E2e {
     ): SendReport?
 
     fun registerListener(
-        senderId: UserId,
+        senderId: UserId?,
         messageType: MessageType,
         e2eListener: MessageListener
     )
