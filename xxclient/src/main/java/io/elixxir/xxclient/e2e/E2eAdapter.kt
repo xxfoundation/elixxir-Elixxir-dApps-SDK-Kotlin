@@ -1,5 +1,6 @@
 package io.elixxir.xxclient.e2e
 
+import com.google.gson.Gson
 import io.elixxir.xxclient.callbacks.*
 import io.elixxir.xxclient.models.*
 import io.elixxir.xxclient.models.BindingsModel.Companion.decode
@@ -129,7 +130,7 @@ open class E2eAdapter(protected val e2e: E2eBindings) : E2e{
             payload,
             params
         )
-        return decode(reportData)
+        return Gson().fromJson(reportData.decodeToString(), SendReport::class.java)
     }
 
     override fun registerListener(
