@@ -10,7 +10,7 @@ interface E2e {
     val id: E2eId
     val payloadSize: Long
     val receptionIdentity: ReceptionId
-    val contact: Contact
+    val userProfile: Contact
 
     fun setPartitionSize(bytes: Long): Long
 

@@ -16,7 +16,7 @@ open class E2eAdapter(protected val e2e: E2eBindings) : E2e{
         get() = e2e.payloadSize()
     override val receptionIdentity: ReceptionId
         get() = e2e.receptionID
-    override val contact: Contact
+    override val userProfile: Contact
         get() = ContactAdapter(e2e.contact)
 
     override fun setPartitionSize(bytes: Long): Long {
