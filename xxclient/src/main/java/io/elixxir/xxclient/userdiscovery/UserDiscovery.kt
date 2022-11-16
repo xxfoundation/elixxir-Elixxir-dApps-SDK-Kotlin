@@ -11,7 +11,7 @@ import bindings.UserDiscovery as UdBindings
 
 interface UserDiscovery {
     val id: Long
-    val contact: Contact
+    val contactModel: Contact
     val facts: List<Fact>
 
     fun sendRegisterFact(fact: Fact): ConfirmationId
@@ -23,7 +23,7 @@ interface UserDiscovery {
 open class UserDiscoveryAdapter(protected val ud: UdBindings) : UserDiscovery {
     override val id: Long
         get() = ud.id
-    override val contact: Contact
+    override val contactModel: Contact
         get() = ContactAdapter(ud.contact)
     override val facts: List<Fact>
         get() = decodeArray(ud.facts)
