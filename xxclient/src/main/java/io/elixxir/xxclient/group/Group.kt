@@ -1,7 +1,7 @@
 package io.elixxir.xxclient.group
 
-import io.elixxir.xxclient.models.BindingsModel.Companion.decodeArray
-import io.elixxir.xxclient.models.GroupMember
+import io.elixxir.xxclient.models.BindingsModel.Companion.decode
+import io.elixxir.xxclient.models.GroupMembersList
 import bindings.Group as GroupBindings
 
 interface Group {
@@ -9,7 +9,7 @@ interface Group {
     val createdNano: Long
     val id: ByteArray
     val initMessage: ByteArray
-    val membership: List<GroupMember>
+    val membership: GroupMembersList
     val name: ByteArray
     val serialize: ByteArray
 }
@@ -25,11 +25,10 @@ open class GroupAdapter(
         get() = group.id
     override val initMessage: ByteArray
         get() = group.initMessage
-    override val membership: List<GroupMember>
-        get() = decodeArray(group.membership)
+    override val membership: GroupMembersList
+        get() = decode(group.membership) ?: GroupMembersList(listOf())
     override val name: ByteArray
         get() = group.name
-    override val serialize: ByteArray
-        get() = group.serialize()
+    override val serialize: ByteArray by lazy { group.serialize() }
 }
 
