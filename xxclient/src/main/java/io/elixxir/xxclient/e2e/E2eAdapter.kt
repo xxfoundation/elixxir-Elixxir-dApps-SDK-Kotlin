@@ -130,7 +130,7 @@ open class E2eAdapter(protected val e2e: E2eBindings) : E2e{
             payload,
             params
         )
-        return Gson().fromJson(reportData.decodeToString(), SendReport::class.java)
+        return decode(reportData)
     }
 
     override fun registerListener(
