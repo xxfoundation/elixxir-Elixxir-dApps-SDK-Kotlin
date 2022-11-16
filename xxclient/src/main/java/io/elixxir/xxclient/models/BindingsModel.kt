@@ -13,8 +13,11 @@ interface BindingsModel {
         }
 
         inline fun <reified T> encodeArray(list: List<T>): ByteArray {
+            val data = list.map {
+                (it as? ByteArray)?.toBase64String() ?: it
+            }
             val typeToken = object : TypeToken<Array<T>>() {}.type
-            return Gson().toJson(list.toTypedArray(), typeToken).encodeToByteArray()
+            return Gson().toJson(data.toTypedArray(), typeToken).encodeToByteArray()
         }
 
         inline fun <reified T> decode(data: ByteArray?): T? {
