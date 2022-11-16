@@ -2,7 +2,6 @@ package io.elixxir.xxclient.models
 
 import android.util.Log
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import io.elixxir.xxclient.utils.toBase64String
 
 interface BindingsModel {
@@ -16,15 +15,13 @@ interface BindingsModel {
             val data = list.map {
                 (it as? ByteArray)?.toBase64String() ?: it
             }
-            val typeToken = object : TypeToken<Array<T>>() {}.type
-            return Gson().toJson(data.toTypedArray(), typeToken).encodeToByteArray()
+            return Gson().toJson(data.toTypedArray(), T::class.java).encodeToByteArray()
         }
 
         inline fun <reified T> decode(data: ByteArray?): T? {
             return data?.run {
                 if (isValidData()) {
-                    val typeToken = object : TypeToken<T>() {}.type
-                    Gson().fromJson<T>(decodeToString(), typeToken)
+                    Gson().fromJson(decodeToString(), T::class.java)
                 } else {
                     Log.d("Decode", "Failed to decode data: ${decodeToString()}")
                     null
@@ -35,8 +32,7 @@ interface BindingsModel {
         inline fun <reified T> decodeArray(data: ByteArray?): List<T> {
             return data?.run {
                 if (isValidData()) {
-                    val typeToken = object : TypeToken<Array<T>>() {}.type
-                    Gson().fromJson<Array<T>>(decodeToString(), typeToken).toList()
+                    Gson().fromJson(decodeToString(), Array<T>::class.java).toList()
                 } else listOf()
             } ?: listOf()
         }
