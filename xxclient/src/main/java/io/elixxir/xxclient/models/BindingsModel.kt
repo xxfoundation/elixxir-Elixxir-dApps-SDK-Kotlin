@@ -15,7 +15,7 @@ interface BindingsModel {
             val data = list.map {
                 (it as? ByteArray)?.toBase64String() ?: it
             }
-            return Gson().toJson(data.toTypedArray(), T::class.java).encodeToByteArray()
+            return Gson().toJson(data.toTypedArray(), Array<T>::class.java).encodeToByteArray()
         }
 
         inline fun <reified T> decode(data: ByteArray?): T? {
