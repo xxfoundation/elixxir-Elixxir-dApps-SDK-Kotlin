@@ -16,14 +16,19 @@ interface BindingsModel {
             val data = list.map {
                 (it as? ByteArray)?.toBase64String() ?: it
             }
-            return Gson().toJson(data.toTypedArray(), Array<T>::class.java).encodeToByteArray()
+            return Gson().toJson(
+                data.toTypedArray(),
+                object : TypeToken<Array<T>>() {}.type
+            ).encodeToByteArray()
         }
 
         inline fun <reified T> decode(data: ByteArray?): T? {
             return data?.run {
                 if (isValidData()) {
-                    val typeToken = object : TypeToken<T>() {}.type
-                    Gson().fromJson<T>(decodeToString(), typeToken)
+                    Gson().fromJson<T>(
+                        decodeToString(),
+                        object : TypeToken<T>() {}.type
+                    )
                 } else {
                     Log.d("Decode", "Failed to decode data: ${decodeToString()}")
                     null
@@ -34,8 +39,10 @@ interface BindingsModel {
         inline fun <reified T> decodeArray(data: ByteArray?): List<T> {
             return data?.run {
                 if (isValidData()) {
-                    val typeToken = object : TypeToken<Array<T>>() {}.type
-                    Gson().fromJson<Array<T>>(decodeToString(), typeToken).toList()
+                    Gson().fromJson<Array<T>>(
+                        decodeToString(),
+                        object : TypeToken<Array<T>>() {}.type
+                    ).toList()
                 } else listOf()
             } ?: listOf()
         }
