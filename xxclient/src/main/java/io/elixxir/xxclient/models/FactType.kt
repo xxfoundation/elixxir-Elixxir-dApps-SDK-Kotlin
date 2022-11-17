@@ -5,13 +5,13 @@ sealed class FactType {
     object Username : FactType()
     object Email : FactType()
     object Phone : FactType()
-    class Other(val code: Long) : FactType()
+    class Other(val code: Int) : FactType()
 
     companion object {
-        fun from(code: Long): FactType = when (code) {
-            0L -> Username
-            1L -> Email
-            2L -> Phone
+        fun from(code: Int): FactType = when (code) {
+            0 -> Username
+            1 -> Email
+            2 -> Phone
             else -> Other(code)
         }
     }

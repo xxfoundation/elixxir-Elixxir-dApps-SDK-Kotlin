@@ -6,5 +6,5 @@ data class Fact(
     @SerializedName("Fact")
     val fact: String,
     @SerializedName("T")
-    val type: Long
+    val type: Int
 ) : BindingsModel
