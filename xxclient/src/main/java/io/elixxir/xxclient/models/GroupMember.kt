@@ -8,8 +8,8 @@ data class GroupMembersList(
 
 data class GroupMember(
     @SerializedName("ID")
-    val id: ByteArray,
-    @SerializedName("DHKey")
+    val id: String,
+    @SerializedName("DhKey")
     val dhKey: DHKey
 ) : BindingsModel {
 
