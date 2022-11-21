@@ -1,6 +1,5 @@
 package io.elixxir.xxclient.e2e
 
-import com.google.gson.Gson
 import io.elixxir.xxclient.callbacks.*
 import io.elixxir.xxclient.models.*
 import io.elixxir.xxclient.models.BindingsModel.Companion.decode
@@ -23,7 +22,7 @@ open class E2eAdapter(protected val e2e: E2eBindings) : E2e{
         return e2e.partitionSize(bytes)
     }
 
-    override fun getAllPartnerIds(): List<UserId> {
+    override fun getAllPartnerIds(): List<String> {
         return decodeArray(e2e.allPartnerIDs)
     }
 
