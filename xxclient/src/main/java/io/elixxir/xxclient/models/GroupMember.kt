@@ -1,6 +1,7 @@
 package io.elixxir.xxclient.models
 
 import com.google.gson.annotations.SerializedName
+import javax.crypto.interfaces.DHKey
 
 data class GroupMembersList(
     val members: List<GroupMember>
@@ -9,14 +10,4 @@ data class GroupMembersList(
 data class GroupMember(
     @SerializedName("ID")
     val id: String,
-    @SerializedName("DhKey")
-    val dhKey: DHKey
-) : BindingsModel {
-
-    data class DHKey(
-        @SerializedName("Value")
-        val value: String,
-        @SerializedName("Fingerprint")
-        val fingerprint: Int
-    ) : BindingsModel
-}
+) : BindingsModel
